@@ -4,13 +4,60 @@
 
 @layer base {
   body {
-    background-color: #f8faf9;
+    background-color: #f7faf7;
     color: #1a2e26;
+    background-image: 
+      radial-gradient(circle at 10% 20%, rgba(82, 183, 136, 0.05) 0%, transparent 20%),
+      radial-gradient(circle at 90% 80%, rgba(233, 196, 106, 0.06) 0%, transparent 25%),
+      radial-gradient(circle at 50% 50%, rgba(232, 245, 233, 0.5) 0%, transparent 50%);
+    background-attachment: fixed;
   }
 }
 
-.glass-card {
-  background: rgba(255, 255, 255, 0.85);
+/* Cute Farm Glass Card */
+.cute-card {
+  background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(229, 231, 235, 0.8);
+  border: 1px solid rgba(82, 183, 136, 0.18);
+  box-shadow: 0 10px 30px -5px rgba(27, 67, 50, 0.05);
+  border-radius: 1.5rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cute-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px -10px rgba(45, 106, 79, 0.12);
+  border-color: rgba(82, 183, 136, 0.35);
+}
+
+/* Cute Hero Background with Soft Sunbeam & Sprouts */
+.cute-farm-hero {
+  background: linear-gradient(135deg, #1b4332 0%, #2d6a4f 60%, #40916c 100%);
+  position: relative;
+}
+
+.cute-farm-hero::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 24px;
+  background-image: radial-gradient(circle at 12px -6px, transparent 12px, #f7faf7 13px);
+  background-size: 24px 24px;
+}
+
+/* Decorative Leaf Watermark */
+.leaf-pattern {
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%232d6a4f' fill-opacity='0.03' fill-rule='evenodd'%3E%3Cpath d='M30 30c0-11 9-20 20-20v20H30zm-20 0c0-11 9-20 20-20v20H10z'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* Soft Pill Badge */
+.cute-badge {
+  background: #e8f5e9;
+  color: #1b4332;
+  border: 1px solid rgba(82, 183, 136, 0.3);
+  font-weight: 700;
+  border-radius: 9999px;
+  padding: 0.25rem 0.75rem;
 }
