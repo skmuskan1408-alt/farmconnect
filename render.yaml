@@ -1,9 +1,3 @@
-databases:
-  - name: farmconnect-db
-    databaseName: farmconnect
-    user: farmconnect_user
-    plan: free
-
 services:
   - type: web
     name: farmconnect-sih2026
@@ -12,10 +6,6 @@ services:
     buildCommand: cd backend && npm install && node scripts/prepare-prisma.js && npx prisma db push && npm run build && node dist/seed.js && cd ../frontend && npm install && npm run build
     startCommand: cd backend && npm start
     envVars:
-      - key: DATABASE_URL
-        fromDatabase:
-          name: farmconnect-db
-          property: connectionString
       - key: JWT_SECRET
         generateValue: true
       - key: NODE_VERSION
