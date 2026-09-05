@@ -1,14 +1,21 @@
+databases:
+  - name: farmconnect-db
+    databaseName: farmconnect
+    user: farmconnect_user
+    plan: free
+
 services:
   - type: web
     name: farmconnect-sih2026
     env: node
-    buildCommand: cd backend && npm install && npx prisma db push && npx ts-node prisma/seed.ts && npm run build && cd ../frontend && npm install && npm run build
+    plan: free
+    buildCommand: cd backend && npm install && node scripts/prepare-prisma.js && npx prisma db push && npx ts-node prisma/seed.ts && npm run build && cd ../frontend && npm install && npm run build
     startCommand: cd backend && npm start
     envVars:
-      - key: PORT
-        value: 10000
       - key: DATABASE_URL
-        value: file:./dev.db
+        fromDatabase:
+          name: farmconnect-db
+          property: connectionString
       - key: JWT_SECRET
         value: farmconnect_super_secret_jwt_key_sih2026_998877
       - key: NODE_ENV
