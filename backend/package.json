@@ -9,7 +9,11 @@
     "dev": "nodemon --watch src --exec ts-node src/server.ts",
     "prisma:generate": "prisma generate",
     "prisma:push": "prisma db push",
-    "prisma:seed": "ts-node prisma/seed.ts"
+    "prisma:seed": "node dist/seed.js",
+    "seed": "node dist/seed.js"
+  },
+  "prisma": {
+    "seed": "node dist/seed.js"
   },
   "dependencies": {
     "@prisma/client": "^5.10.0",
