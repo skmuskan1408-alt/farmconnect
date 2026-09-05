@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { ShoppingCart, Star, MapPin, CheckCircle2, TrendingDown } from 'lucide-react';
 import { Product } from '../../types';
 import { useCart } from '../../context/CartContext';
@@ -10,6 +11,7 @@ interface ProductCardProps {
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+  const { t } = useTranslation();
   const { addToCart } = useCart();
   const { user } = useAuth();
   const [adding, setAdding] = React.useState(false);
@@ -48,13 +50,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         
         {/* Savings Badge */}
         <div className="absolute top-3 left-3 bg-agri-accent text-agri-dark font-extrabold text-xs px-2.5 py-1 rounded-full shadow flex items-center gap-1">
-          <TrendingDown className="w-3.5 h-3.5" /> Save {savingsPercent}% vs Retail
+          <TrendingDown className="w-3.5 h-3.5" /> {t('common.save')} {savingsPercent}% {t('common.vs_retail')}
         </div>
 
         {/* Organic Badge */}
         {product.organic && (
           <div className="absolute top-3 right-3 bg-agri-dark/90 backdrop-blur-md text-white font-bold text-[10px] uppercase px-2.5 py-1 rounded-full shadow flex items-center gap-1 border border-agri-light/30">
-            <CheckCircle2 className="w-3 h-3 text-agri-light" /> Organic
+            <CheckCircle2 className="w-3 h-3 text-agri-light" /> {t('common.organic')}
           </div>
         )}
 
@@ -85,9 +87,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
           {/* Farmer Tag */}
           <div className="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between text-xs text-gray-600">
-            <span>Farmer: <strong className="text-gray-900 font-bold">{product.farmer?.name || 'Local Farmer'}</strong></span>
+            <span>{t('common.farmer')}: <strong className="text-gray-900 font-bold">{product.farmer?.name || 'Local Farmer'}</strong></span>
             <span className="text-agri-dark font-semibold bg-agri-pale px-2 py-0.5 rounded-full">
-              {product.quantity} {product.unit} available
+              {product.quantity} {product.unit} {t('common.available')}
             </span>
           </div>
         </div>
@@ -109,14 +111,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               to={`/product/${product.id}`}
               className="px-3.5 py-2 rounded-xl text-xs font-bold bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors"
             >
-              Details
+              {t('common.details')}
             </Link>
             
             <button
               onClick={handleAddToCart}
               disabled={adding}
               className="p-2.5 rounded-xl bg-agri-dark text-white hover:bg-agri-primary transition-colors shadow flex items-center justify-center disabled:opacity-50"
-              title="Add to Cart"
+              title={t('common.add_to_cart')}
             >
               <ShoppingCart className="w-4 h-4 text-agri-accent" />
             </button>

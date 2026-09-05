@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Sprout, ShoppingCart, User, LogOut, LayoutDashboard, Truck, TrendingUp, Search, MessageSquare, Bell } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { Sprout, ShoppingCart, LogOut, LayoutDashboard, Truck, TrendingUp, Search } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useCart } from '../../context/CartContext';
+import { LanguageSelector } from './LanguageSelector';
 
 export const Navbar: React.FC = () => {
+  const { t } = useTranslation();
   const { user, logout } = useAuth();
   const { cartCount } = useCart();
   const navigate = useNavigate();
@@ -36,33 +39,36 @@ export const Navbar: React.FC = () => {
                 FARM<span className="text-agri-accent">CONNECT</span>
               </span>
               <span className="text-xs text-agri-pale/80 block font-medium -mt-1">
-                From Farm to Your Table — Directly.
+                {t('common.tagline')}
               </span>
             </div>
           </Link>
 
           {/* Nav Links */}
-          <div className="hidden md:flex items-center space-x-8 text-sm font-semibold">
+          <div className="hidden md:flex items-center space-x-6 text-sm font-semibold">
             <Link to="/marketplace" className="hover:text-agri-accent transition-colors flex items-center gap-1.5">
               <Search className="w-4 h-4 text-agri-light" />
-              Marketplace
+              {t('common.marketplace')}
             </Link>
             <Link to="/bulk-requests" className="hover:text-agri-accent transition-colors flex items-center gap-1.5">
               <Truck className="w-4 h-4 text-agri-accent" />
-              Bulk Buyer Hub
+              {t('common.bulk_hub')}
             </Link>
             <a href="/#how-it-works" className="hover:text-agri-accent transition-colors">
-              How It Works
+              {t('common.how_it_works')}
             </a>
             <a href="/#ai-forecasting" className="hover:text-agri-accent transition-colors flex items-center gap-1.5">
               <TrendingUp className="w-4 h-4 text-agri-light" />
-              AI Demand Forecast
+              {t('common.ai_forecast')}
             </a>
           </div>
 
-          {/* Action Buttons & Auth */}
-          <div className="flex items-center space-x-4">
+          {/* Action Buttons, Language Selector & Auth */}
+          <div className="flex items-center space-x-3">
             
+            {/* Global Language Selector */}
+            <LanguageSelector />
+
             {/* Cart Button */}
             {user?.role === 'CONSUMER' && (
               <Link to="/cart" className="relative p-2.5 rounded-full bg-agri-primary/40 hover:bg-agri-primary text-white transition-all">
@@ -104,7 +110,7 @@ export const Navbar: React.FC = () => {
                       className="flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-agri-pale hover:text-agri-dark font-medium transition-colors"
                     >
                       <LayoutDashboard className="w-4 h-4 mr-3 text-agri-primary" />
-                      Dashboard
+                      {t('common.dashboard')}
                     </Link>
                     <button
                       onClick={() => {
@@ -115,24 +121,24 @@ export const Navbar: React.FC = () => {
                       className="w-full flex items-center px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 font-medium transition-colors text-left"
                     >
                       <LogOut className="w-4 h-4 mr-3" />
-                      Logout
+                      {t('common.logout')}
                     </button>
                   </div>
                 )}
               </div>
             ) : (
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-2">
                 <Link
                   to="/login"
-                  className="px-4 py-2 rounded-xl text-sm font-bold text-agri-pale hover:text-white transition-colors"
+                  className="px-3 py-2 rounded-xl text-xs font-bold text-agri-pale hover:text-white transition-colors"
                 >
-                  Log In
+                  {t('common.login')}
                 </Link>
                 <Link
                   to="/register"
-                  className="px-5 py-2.5 rounded-xl text-sm font-bold bg-agri-accent text-agri-dark hover:bg-yellow-400 shadow-md hover:shadow-lg transition-all"
+                  className="px-4 py-2 rounded-xl text-xs font-bold bg-agri-accent text-agri-dark hover:bg-yellow-400 shadow-md transition-all"
                 >
-                  Get Started
+                  {t('common.register')}
                 </Link>
               </div>
             )}

@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { MainLayout } from '../layouts/MainLayout';
 import { ProductCard } from '../components/product/ProductCard';
 import api from '../services/api';
 import { Product, Category } from '../types';
-import { Search, Filter, SlidersHorizontal, RefreshCw, CheckCircle2 } from 'lucide-react';
+import { Search, CheckCircle2 } from 'lucide-react';
 
 export const MarketplacePage: React.FC = () => {
+  const { t } = useTranslation();
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -13,7 +15,6 @@ export const MarketplacePage: React.FC = () => {
   // Filters
   const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
-  const [selectedLocation, setSelectedLocation] = useState('');
   const [organicOnly, setOrganicOnly] = useState(false);
   const [sortBy, setSortBy] = useState('newest');
 
@@ -23,7 +24,6 @@ export const MarketplacePage: React.FC = () => {
       const params = new URLSearchParams();
       if (search) params.append('search', search);
       if (selectedCategory !== 'all') params.append('category', selectedCategory);
-      if (selectedLocation) params.append('location', selectedLocation);
       if (organicOnly) params.append('organic', 'true');
       if (sortBy) params.append('sortBy', sortBy);
 
@@ -55,13 +55,13 @@ export const MarketplacePage: React.FC = () => {
           <div className="bg-agri-dark text-white p-8 sm:p-10 rounded-3xl shadow-xl mb-10 relative overflow-hidden">
             <div className="max-w-2xl relative z-10">
               <span className="bg-agri-primary text-agri-accent text-xs font-extrabold uppercase tracking-widest px-3 py-1 rounded-full">
-                Direct Agricultural Marketplace
+                {t('common.app_name')} {t('common.marketplace')}
               </span>
               <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight mt-2 text-white">
-                Fresh Produce Directly From Indian Farmers
+                {t('marketplace.title')}
               </h1>
               <p className="text-sm text-agri-pale/80 mt-2 font-medium">
-                No middlemen, transparent prices, guaranteed farm origin and high quality.
+                {t('marketplace.subtitle')}
               </p>
             </div>
           </div>
@@ -76,7 +76,7 @@ export const MarketplacePage: React.FC = () => {
                   type="text"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  placeholder="Search produce (e.g. Tomatoes, Onions, Alphonso Mangoes, Rice)..."
+                  placeholder={t('marketplace.search_placeholder')}
                   className="w-full pl-12 pr-4 py-3 rounded-2xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-agri-primary text-sm font-medium"
                 />
               </div>
@@ -87,17 +87,17 @@ export const MarketplacePage: React.FC = () => {
                   onChange={(e) => setSortBy(e.target.value)}
                   className="px-4 py-3 rounded-2xl border border-gray-200 text-sm font-semibold text-gray-700 focus:outline-none"
                 >
-                  <option value="newest">Sort: Newest First</option>
-                  <option value="price_low">Sort: Price Low to High</option>
-                  <option value="price_high">Sort: Price High to Low</option>
-                  <option value="rating">Sort: Highest Rating</option>
+                  <option value="newest">{t('marketplace.sort_newest')}</option>
+                  <option value="price_low">{t('marketplace.sort_price_low')}</option>
+                  <option value="price_high">{t('marketplace.sort_price_high')}</option>
+                  <option value="rating">{t('marketplace.sort_rating')}</option>
                 </select>
 
                 <button
                   type="submit"
                   className="px-6 py-3 rounded-2xl bg-agri-dark text-white font-bold text-sm hover:bg-agri-primary transition-all shadow-md"
                 >
-                  Search
+                  {t('common.submit')}
                 </button>
               </div>
             </form>
@@ -112,7 +112,7 @@ export const MarketplacePage: React.FC = () => {
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
-                All Produce
+                {t('marketplace.all_produce')}
               </button>
               {categories.map((cat) => (
                 <button
@@ -138,7 +138,7 @@ export const MarketplacePage: React.FC = () => {
                 }`}
               >
                 <CheckCircle2 className="w-3.5 h-3.5 text-agri-accent" />
-                <span>Organic Only</span>
+                <span>{t('marketplace.organic_only')}</span>
               </button>
             </div>
 
@@ -148,13 +148,12 @@ export const MarketplacePage: React.FC = () => {
           {loading ? (
             <div className="py-20 text-center">
               <div className="w-12 h-12 border-4 border-agri-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-              <p className="text-gray-600 font-bold text-sm">Fetching fresh farm produce...</p>
+              <p className="text-gray-600 font-bold text-sm">...</p>
             </div>
           ) : products.length === 0 ? (
             <div className="bg-white rounded-3xl p-12 text-center border border-gray-100">
               <span className="text-4xl">🌾</span>
-              <h3 className="text-lg font-bold text-gray-900 mt-2">No Produce Found</h3>
-              <p className="text-xs text-gray-500 mt-1">Try relaxing your search terms or filters.</p>
+              <h3 className="text-lg font-bold text-gray-900 mt-2">{t('marketplace.no_produce')}</h3>
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
