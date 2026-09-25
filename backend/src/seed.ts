@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log('🌱 Starting FARMCONNECT database seeding...');
+  console.log('🌱 Starting KISSANCONNECT database seeding...');
 
   // Clean existing tables
   await prisma.farmerOffer.deleteMany();
@@ -26,19 +26,54 @@ async function main() {
   await prisma.farmerProfile.deleteMany();
   await prisma.consumerProfile.deleteMany();
   await prisma.bulkBuyerProfile.deleteMany();
+  if ((prisma as any).fPOProfile) await (prisma as any).fPOProfile.deleteMany();
+  if ((prisma as any).fpoProfile) await (prisma as any).fpoProfile.deleteMany();
   await prisma.user.deleteMany();
 
-  const defaultPassword = await bcrypt.hash('password123', 10);
+  const demoPassword = await bcrypt.hash('Demo@123', 10);
+  const defaultPassword = demoPassword;
 
-  // 1. Create Admin
+  // 1. Create Admins & Demo FPO User
   await prisma.user.create({
     data: {
-      email: 'admin@farmconnect.in',
+      email: 'admin@kissanconnect.in',
       password: defaultPassword,
       name: 'System Admin',
       phone: '+91 9876543210',
       role: 'ADMIN',
       location: 'New Delhi, Delhi'
+    }
+  });
+
+  await prisma.user.create({
+    data: {
+      email: 'admin.demo@kissanconnect.com',
+      password: demoPassword,
+      name: 'Official Admin Demo',
+      phone: '+91 9999900004',
+      role: 'ADMIN',
+      location: 'New Delhi, Delhi'
+    }
+  });
+
+  const demoFPO = await prisma.user.create({
+    data: {
+      email: 'fpo.demo@kissanconnect.com',
+      password: demoPassword,
+      name: 'Raitu Mithra FPO (Demo)',
+      phone: '+91 9999900005',
+      role: 'FPO',
+      location: 'Madanapalle, Andhra Pradesh',
+      fpoProfile: {
+        create: {
+          fpoName: 'Raitu Mithra Farmer Producer Company Ltd.',
+          location: 'Madanapalle, Chittoor District, AP',
+          memberCount: 65,
+          registrationNumber: 'FPO-AP-2024-8891',
+          rating: 4.9,
+          totalSales: 1850
+        }
+      }
     }
   });
 
@@ -57,18 +92,19 @@ async function main() {
     categoriesMap[cat.slug] = createdCat.id;
   }
 
-  // 3. Create 10 Farmers
+  // 3. Create Farmers (including Official Demo Farmer)
   const farmersList = [
-    { name: 'Ramesh Kumar', email: 'ramesh.farmer@farmconnect.in', phone: '+91 9812345671', location: 'Madanapalle, Andhra Pradesh', farmName: 'Green Valley Agro Farm', organic: true, type: 'Natural & Hydroponic', bio: 'Pioneer in organic tomato and vegetable cultivation with 15+ years of experience.' },
-    { name: 'Suresh Patel', email: 'suresh.farmer@farmconnect.in', phone: '+91 9812345672', location: 'Nashik, Maharashtra', farmName: 'Sahyadri Agri Farms', organic: true, type: 'Organic Certified', bio: 'Specialized in premium Nashik onions and exporter-grade grapes.' },
-    { name: 'Anita Devi', email: 'anita.farmer@farmconnect.in', phone: '+91 9812345673', location: 'Kolar, Karnataka', farmName: 'Surya Organic Produce', organic: true, type: 'Permaculture', bio: 'Empowering women in agriculture; focused on zero-pesticide root crops.' },
-    { name: 'Baldev Singh', email: 'baldev.farmer@farmconnect.in', phone: '+91 9812345674', location: 'Ludhiana, Punjab', farmName: 'Golden Fields Wheat & Paddy', organic: false, type: 'Traditional Mechanized', bio: 'Direct grain producer supplying top quality Sharbati wheat and basmati rice.' },
-    { name: 'Rajesh Gowda', email: 'rajesh.farmer@farmconnect.in', phone: '+91 9812345675', location: 'Mandya, Karnataka', farmName: 'Kaveri Basin Organic Farm', organic: true, type: 'Vedic Farming', bio: 'Focuses on ancient grain varieties, jaggery, and chemical-free fruits.' },
-    { name: 'Vikram Reddy', email: 'vikram.farmer@farmconnect.in', phone: '+91 9812345676', location: 'Guntur, Andhra Pradesh', farmName: 'Mirchi King Spices Farm', organic: false, type: 'Precision Agriculture', bio: 'Renowned for world-famous Guntur Sanam and Teja red chillies.' },
-    { name: 'Gurpreet Kaur', email: 'gurpreet.farmer@farmconnect.in', phone: '+91 9812345677', location: 'Amritsar, Punjab', farmName: 'Amrit Organic Dairy & Produce', organic: true, type: 'Biodynamic', bio: 'Combining A2 dairy farming with seasonal organic green vegetables.' },
-    { name: 'Devendra Kulkarni', email: 'devendra.farmer@farmconnect.in', phone: '+91 9812345678', location: 'Ratnagiri, Maharashtra', farmName: 'Konkan Orchards', organic: true, type: 'GI Tagged Mango Agro', bio: 'Authentic Ratnagiri Alphonso mango grower with GI tagging.' },
-    { name: 'Kavitha Nair', email: 'kavitha.farmer@farmconnect.in', phone: '+91 9812345679', location: 'Wayanad, Kerala', farmName: 'Highland Spice Plantation', organic: true, type: 'Shade Grown Organic', bio: 'Harvesting premium turmeric, black pepper, and cardamom straight from Wayanad hills.' },
-    { name: 'Mahesh Sharma', email: 'mahesh.farmer@farmconnect.in', phone: '+91 9812345680', location: 'Shimla, Himachal Pradesh', farmName: 'Apple Valley Orchards', organic: false, type: 'Himalayan Horticulture', bio: 'Fresh crisp Shimla apples and cherries grown in clean mountain air.' }
+    { name: 'Demo Farmer (Ramesh)', email: 'farmer.demo@kissanconnect.com', phone: '+91 9812345600', location: 'Madanapalle, Andhra Pradesh', farmName: 'Green Valley Demo Farm', organic: true, type: 'Natural & Hydroponic', bio: 'Demo farmer profile for KissanConnect application tutorial and testing.' },
+    { name: 'Ramesh Kumar', email: 'ramesh.farmer@kissanconnect.in', phone: '+91 9812345671', location: 'Madanapalle, Andhra Pradesh', farmName: 'Green Valley Agro Farm', organic: true, type: 'Natural & Hydroponic', bio: 'Pioneer in organic tomato and vegetable cultivation with 15+ years of experience.' },
+    { name: 'Suresh Patel', email: 'suresh.farmer@kissanconnect.in', phone: '+91 9812345672', location: 'Nashik, Maharashtra', farmName: 'Sahyadri Agri Farms', organic: true, type: 'Organic Certified', bio: 'Specialized in premium Nashik onions and exporter-grade grapes.' },
+    { name: 'Anita Devi', email: 'anita.farmer@kissanconnect.in', phone: '+91 9812345673', location: 'Kolar, Karnataka', farmName: 'Surya Organic Produce', organic: true, type: 'Permaculture', bio: 'Empowering women in agriculture; focused on zero-pesticide root crops.' },
+    { name: 'Baldev Singh', email: 'baldev.farmer@kissanconnect.in', phone: '+91 9812345674', location: 'Ludhiana, Punjab', farmName: 'Golden Fields Wheat & Paddy', organic: false, type: 'Traditional Mechanized', bio: 'Direct grain producer supplying top quality Sharbati wheat and basmati rice.' },
+    { name: 'Rajesh Gowda', email: 'rajesh.farmer@kissanconnect.in', phone: '+91 9812345675', location: 'Mandya, Karnataka', farmName: 'Kaveri Basin Organic Farm', organic: true, type: 'Vedic Farming', bio: 'Focuses on ancient grain varieties, jaggery, and chemical-free fruits.' },
+    { name: 'Vikram Reddy', email: 'vikram.farmer@kissanconnect.in', phone: '+91 9812345676', location: 'Guntur, Andhra Pradesh', farmName: 'Mirchi King Spices Farm', organic: false, type: 'Precision Agriculture', bio: 'Renowned for world-famous Guntur Sanam and Teja red chillies.' },
+    { name: 'Gurpreet Kaur', email: 'gurpreet.farmer@kissanconnect.in', phone: '+91 9812345677', location: 'Amritsar, Punjab', farmName: 'Amrit Organic Dairy & Produce', organic: true, type: 'Biodynamic', bio: 'Combining A2 dairy farming with seasonal organic green vegetables.' },
+    { name: 'Devendra Kulkarni', email: 'devendra.farmer@kissanconnect.in', phone: '+91 9812345678', location: 'Ratnagiri, Maharashtra', farmName: 'Konkan Orchards', organic: true, type: 'GI Tagged Mango Agro', bio: 'Authentic Ratnagiri Alphonso mango grower with GI tagging.' },
+    { name: 'Kavitha Nair', email: 'kavitha.farmer@kissanconnect.in', phone: '+91 9812345679', location: 'Wayanad, Kerala', farmName: 'Highland Spice Plantation', organic: true, type: 'Shade Grown Organic', bio: 'Harvesting premium turmeric, black pepper, and cardamom straight from Wayanad hills.' },
+    { name: 'Mahesh Sharma', email: 'mahesh.farmer@kissanconnect.in', phone: '+91 9812345680', location: 'Shimla, Himachal Pradesh', farmName: 'Apple Valley Orchards', organic: false, type: 'Himalayan Horticulture', bio: 'Fresh crisp Shimla apples and cherries grown in clean mountain air.' }
   ];
 
   const farmerUserIds: string[] = [];
@@ -78,7 +114,7 @@ async function main() {
         name: f.name,
         email: f.email,
         phone: f.phone,
-        password: defaultPassword,
+        password: demoPassword,
         role: 'FARMER',
         location: f.location,
         farmerProfile: {
@@ -88,8 +124,8 @@ async function main() {
             organicCertified: f.organic,
             farmingType: f.type,
             bio: f.bio,
-            rating: 4.7 + Math.random() * 0.3,
-            totalSales: Math.floor(150 + Math.random() * 500)
+            rating: 4.9,
+            totalSales: 420
           }
         }
       }
@@ -97,8 +133,9 @@ async function main() {
     farmerUserIds.push(u.id);
   }
 
-  // 4. Create 10 Consumers
+  // 4. Create Consumers (including Official Demo Consumer)
   const consumersList = [
+    { name: 'Demo Consumer (Priya)', email: 'consumer.demo@kissanconnect.com', location: 'Bengaluru, Karnataka' },
     { name: 'Priya Sharma', email: 'priya.consumer@gmail.com', location: 'Bengaluru, Karnataka' },
     { name: 'Amit Verma', email: 'amit.verma@yahoo.com', location: 'Mumbai, Maharashtra' },
     { name: 'Sunita Reddy', email: 'sunita.reddy@outlook.com', location: 'Hyderabad, Telangana' },
@@ -118,7 +155,7 @@ async function main() {
         name: c.name,
         email: c.email,
         phone: '+91 97' + Math.floor(10000000 + Math.random() * 90000000),
-        password: defaultPassword,
+        password: demoPassword,
         role: 'CONSUMER',
         location: c.location,
         consumerProfile: {
@@ -135,8 +172,9 @@ async function main() {
     consumerUserIds.push(u.id);
   }
 
-  // 5. Create 5 Bulk Buyers
+  // 5. Create Bulk Buyers (including Official Demo Bulk Buyer)
   const buyersList = [
+    { name: 'Demo Bulk Buyer (BigBasket)', email: 'bulk.demo@kissanconnect.com', org: 'BigBasket Fresh Logistics', biz: 'Supermarket Chain', location: 'Bengaluru, Karnataka' },
     { name: 'Anand Mahindra (Procurement Head)', email: 'procure@bigbasketco.com', org: 'BigBasket Fresh Logistics', biz: 'Supermarket Chain', location: 'Bengaluru, Karnataka' },
     { name: 'Deepak Chawla', email: 'buyers@freshtohomeagri.in', org: 'FreshToHome Organics', biz: 'E-Grocery Platform', location: 'Mumbai, Maharashtra' },
     { name: 'Ritu Agarwal', email: 'agri@relianceretail.com', org: 'Reliance Smart Superstore', biz: 'Retail Chain', location: 'Hyderabad, Telangana' },
@@ -167,19 +205,23 @@ async function main() {
     buyerUserIds.push(u.id);
   }
 
-  // 6. Create 20+ Products
+  // 6. Create 20+ Products with Realistic Bulk/Farm Quantities
   const productsData = [
     {
       farmerIndex: 0,
       categorySlug: 'vegetables',
       name: 'Madanapalle Red Tomatoes',
-      description: 'Vine-ripened, firm, farm-fresh tomatoes directly from Madanapalle fields. Zero synthetic preservatives.',
-      price: 32,
-      localPrice: 40,
-      retailPrice: 48,
-      quantity: 1200,
-      unit: 'kg',
-      location: 'Madanapalle, AP',
+      description: 'Vine-ripened, firm, farm-fresh tomatoes directly from Madanapalle fields. Harvested in heavy wooden crates.',
+      price: 900,
+      localPrice: 1100,
+      retailPrice: 1300,
+      quantity: 50,
+      unit: 'Crate',
+      unitType: 'CRATE',
+      unitSize: '20 kg',
+      minimumOrderQuantity: 1,
+      qualityVideoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+      location: 'Madanapalle, Andhra Pradesh',
       harvestDate: '2026-09-02',
       organic: true,
       image: 'https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=800&auto=format&fit=crop&q=80'
@@ -188,13 +230,17 @@ async function main() {
       farmerIndex: 1,
       categorySlug: 'vegetables',
       name: 'Nashik Red Onions',
-      description: 'High shelf life, top export quality Nashik pinkish-red onions. Crisp texture and rich flavor.',
-      price: 24,
-      localPrice: 32,
-      retailPrice: 38,
-      quantity: 2500,
-      unit: 'kg',
-      location: 'Nashik, MH',
+      description: 'High shelf life, top export quality Nashik pinkish-red onions packaged in ventilated mesh bags.',
+      price: 750,
+      localPrice: 900,
+      retailPrice: 1050,
+      quantity: 50,
+      unit: 'Bag',
+      unitType: 'BAG',
+      unitSize: '25 kg',
+      minimumOrderQuantity: 1,
+      qualityVideoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
+      location: 'Nashik, Maharashtra',
       harvestDate: '2026-08-28',
       organic: true,
       image: 'https://images.unsplash.com/photo-1618512496248-a07fe83aa8cb?w=800&auto=format&fit=crop&q=80'
@@ -203,88 +249,93 @@ async function main() {
       farmerIndex: 2,
       categorySlug: 'vegetables',
       name: 'Kolar Gold Potatoes',
-      description: 'Nutrient-dense, low-moisture potatoes suitable for everyday cooking and frying.',
-      price: 22,
-      localPrice: 28,
-      retailPrice: 35,
-      quantity: 1800,
-      unit: 'kg',
-      location: 'Kolar, KA',
+      description: 'Nutrient-dense, low-moisture potatoes suitable for commercial cooking and long storage.',
+      price: 800,
+      localPrice: 950,
+      retailPrice: 1100,
+      quantity: 50,
+      unit: 'Bag',
+      unitType: 'BAG',
+      unitSize: '25 kg',
+      minimumOrderQuantity: 1,
+      qualityVideoUrl: '',
+      location: 'Kolar, Karnataka',
       harvestDate: '2026-09-01',
       organic: true,
       image: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=800&auto=format&fit=crop&q=80'
     },
     {
-      farmerIndex: 2,
-      categorySlug: 'vegetables',
-      name: 'Organic Crunchy Carrots',
-      description: 'Sweet, juicy, vibrant orange carrots harvested without chemicals.',
-      price: 38,
-      localPrice: 48,
-      retailPrice: 58,
-      quantity: 600,
-      unit: 'kg',
-      location: 'Kolar, KA',
-      harvestDate: '2026-09-03',
-      organic: true,
-      image: 'https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?w=800&auto=format&fit=crop&q=80'
-    },
-    {
-      farmerIndex: 7,
-      categorySlug: 'fruits',
-      name: 'Ratnagiri GI Alphonso Mangoes',
-      description: 'The king of mangoes! Naturally ripened in rice hay, intensely sweet aroma.',
-      price: 450,
-      localPrice: 600,
-      retailPrice: 750,
-      quantity: 350,
-      unit: 'dozen',
-      location: 'Ratnagiri, MH',
-      harvestDate: '2026-08-30',
-      organic: true,
-      image: 'https://images.unsplash.com/photo-1553279768-865429fa0078?w=800&auto=format&fit=crop&q=80'
-    },
-    {
-      farmerIndex: 4,
-      categorySlug: 'fruits',
-      name: 'Mandya Robusta Bananas',
-      description: 'Fresh green-yellow robusta banana bunches, naturally grown along Kaveri banks.',
-      price: 35,
-      localPrice: 45,
-      retailPrice: 55,
-      quantity: 800,
-      unit: 'dozen',
-      location: 'Mandya, KA',
-      harvestDate: '2026-09-04',
-      organic: true,
-      image: 'https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=800&auto=format&fit=crop&q=80'
-    },
-    {
       farmerIndex: 3,
       categorySlug: 'grains',
-      name: 'Premium Sona Masoori Rice (Old Harvest)',
-      description: 'Aromatic, lightweight, 12-month aged Sona Masoori unpolished white rice.',
-      price: 58,
-      localPrice: 70,
-      retailPrice: 82,
-      quantity: 5000,
-      unit: 'kg',
-      location: 'Ludhiana, PB',
+      name: 'Premium Sona Masoori Rice',
+      description: 'Aromatic, lightweight, 12-month aged Sona Masoori rice packed in durable jute sacks.',
+      price: 1400,
+      localPrice: 1650,
+      retailPrice: 1900,
+      quantity: 50,
+      unit: 'Bag',
+      unitType: 'BAG',
+      unitSize: '25 kg',
+      minimumOrderQuantity: 1,
+      qualityVideoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+      location: 'Ludhiana, Punjab',
       harvestDate: '2026-05-15',
       organic: false,
       image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=800&auto=format&fit=crop&q=80'
     },
     {
+      farmerIndex: 6,
+      categorySlug: 'dairy',
+      name: 'Fresh Pure Dairy Milk',
+      description: 'Unpasteurized fresh A2 milk from pastured Gir cows delivered in stainless steel transport cans.',
+      price: 2000,
+      localPrice: 2400,
+      retailPrice: 2800,
+      quantity: 50,
+      unit: 'Can',
+      unitType: 'CAN',
+      unitSize: '40 L',
+      minimumOrderQuantity: 1,
+      qualityVideoUrl: '',
+      location: 'Amritsar, Punjab',
+      harvestDate: '2026-09-05',
+      organic: true,
+      image: 'https://images.unsplash.com/photo-1563636619-e9143da7973b?w=800&auto=format&fit=crop&q=80'
+    },
+    {
+      farmerIndex: 7,
+      categorySlug: 'fruits',
+      name: 'Ratnagiri GI Alphonso Mangoes',
+      description: 'Export-grade Alphonso mangoes naturally ripened in hay, packed in corrugated protective boxes.',
+      price: 1200,
+      localPrice: 1500,
+      retailPrice: 1800,
+      quantity: 40,
+      unit: 'Box',
+      unitType: 'BOX',
+      unitSize: '10 kg',
+      minimumOrderQuantity: 1,
+      qualityVideoUrl: '',
+      location: 'Ratnagiri, Maharashtra',
+      harvestDate: '2026-08-30',
+      organic: true,
+      image: 'https://images.unsplash.com/photo-1553279768-865429fa0078?w=800&auto=format&fit=crop&q=80'
+    },
+    {
       farmerIndex: 3,
       categorySlug: 'grains',
       name: 'Sharbati MP Golden Wheat',
-      description: 'Whole grain Sharbati wheat berries yielding soft, fluffy chapattis.',
-      price: 42,
-      localPrice: 52,
-      retailPrice: 62,
-      quantity: 4000,
-      unit: 'kg',
-      location: 'Ludhiana, PB',
+      description: 'Whole grain Sharbati wheat grown in rich soil, yielding soft & golden flour.',
+      price: 1100,
+      localPrice: 1350,
+      retailPrice: 1550,
+      quantity: 60,
+      unit: 'Bag',
+      unitType: 'BAG',
+      unitSize: '25 kg',
+      minimumOrderQuantity: 1,
+      qualityVideoUrl: '',
+      location: 'Ludhiana, Punjab',
       harvestDate: '2026-04-20',
       organic: false,
       image: 'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=800&auto=format&fit=crop&q=80'
@@ -293,13 +344,17 @@ async function main() {
       farmerIndex: 5,
       categorySlug: 'spices',
       name: 'Guntur Sun-Dried Red Chillies',
-      description: 'Pungent, vibrant red Guntur chilli pods for traditional curry masalas.',
-      price: 180,
-      localPrice: 220,
-      retailPrice: 260,
-      quantity: 450,
-      unit: 'kg',
-      location: 'Guntur, AP',
+      description: 'Vibrant red, extra-spicy Guntur chilli pods for commercial spice grinders.',
+      price: 4500,
+      localPrice: 5200,
+      retailPrice: 5900,
+      quantity: 40,
+      unit: 'Bag',
+      unitType: 'BAG',
+      unitSize: '25 kg',
+      minimumOrderQuantity: 1,
+      qualityVideoUrl: '',
+      location: 'Guntur, Andhra Pradesh',
       harvestDate: '2026-08-25',
       organic: false,
       image: 'https://images.unsplash.com/photo-1588252303782-cb80119abd6d?w=800&auto=format&fit=crop&q=80'
@@ -308,91 +363,39 @@ async function main() {
       farmerIndex: 8,
       categorySlug: 'spices',
       name: 'Wayanad High-Curcumin Turmeric',
-      description: 'Pure organic lakadong turmeric powder with 6.5%+ curcumin content.',
-      price: 210,
-      localPrice: 270,
-      retailPrice: 320,
-      quantity: 300,
-      unit: 'kg',
-      location: 'Wayanad, KL',
+      description: 'Pure organic lakadong turmeric whole fingers with 6.5%+ curcumin content.',
+      price: 2100,
+      localPrice: 2600,
+      retailPrice: 3000,
+      quantity: 30,
+      unit: 'Bag',
+      unitType: 'BAG',
+      unitSize: '10 kg',
+      minimumOrderQuantity: 1,
+      qualityVideoUrl: '',
+      location: 'Wayanad, Kerala',
       harvestDate: '2026-08-10',
       organic: true,
       image: 'https://images.unsplash.com/photo-1615485290382-441e4d049cb5?w=800&auto=format&fit=crop&q=80'
     },
     {
-      farmerIndex: 6,
-      categorySlug: 'dairy',
-      name: 'Pure Desi Cow Milk (A2)',
-      description: 'Raw unpasteurized A2 milk from Gir cows fed on natural green pasture.',
-      price: 70,
-      localPrice: 85,
-      retailPrice: 95,
-      quantity: 200,
-      unit: 'liter',
-      location: 'Amritsar, PB',
-      harvestDate: '2026-09-05',
-      organic: true,
-      image: 'https://images.unsplash.com/photo-1563636619-e9143da7973b?w=800&auto=format&fit=crop&q=80'
-    },
-    {
       farmerIndex: 9,
       categorySlug: 'fruits',
       name: 'Crisp Shimla Red Royal Apples',
-      description: 'Handpicked juicy red apples directly from mountain orchards.',
-      price: 120,
-      localPrice: 160,
-      retailPrice: 190,
-      quantity: 1500,
-      unit: 'kg',
-      location: 'Shimla, HP',
+      description: 'Mountain-fresh, handpicked juicy red apples packed in cushioned farm crates.',
+      price: 2400,
+      localPrice: 2900,
+      retailPrice: 3400,
+      quantity: 40,
+      unit: 'Crate',
+      unitType: 'CRATE',
+      unitSize: '20 kg',
+      minimumOrderQuantity: 1,
+      qualityVideoUrl: '',
+      location: 'Shimla, Himachal Pradesh',
       harvestDate: '2026-09-01',
       organic: false,
       image: 'https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=800&auto=format&fit=crop&q=80'
-    },
-    {
-      farmerIndex: 0,
-      categorySlug: 'vegetables',
-      name: 'Fresh Farm Green Capsicum',
-      description: 'Glossy, thick-walled bell peppers ideal for salads and stir frying.',
-      price: 45,
-      localPrice: 60,
-      retailPrice: 75,
-      quantity: 400,
-      unit: 'kg',
-      location: 'Madanapalle, AP',
-      harvestDate: '2026-09-04',
-      organic: true,
-      image: 'https://images.unsplash.com/photo-1563565375-f3fdfdbefa83?w=800&auto=format&fit=crop&q=80'
-    },
-    {
-      farmerIndex: 1,
-      categorySlug: 'vegetables',
-      name: 'Organic Farm Garlic Pods',
-      description: 'Pungent whole garlic bulbs with skin intact, high medicinal value.',
-      price: 140,
-      localPrice: 180,
-      retailPrice: 220,
-      quantity: 350,
-      unit: 'kg',
-      location: 'Nashik, MH',
-      harvestDate: '2026-08-20',
-      organic: true,
-      image: 'https://images.unsplash.com/photo-1540148426945-6cf22a6b2383?w=800&auto=format&fit=crop&q=80'
-    },
-    {
-      farmerIndex: 6,
-      categorySlug: 'vegetables',
-      name: 'Fresh Farm Spinach (Palak)',
-      description: 'Tender green leaves packed with iron and minerals, washed and bunched.',
-      price: 20,
-      localPrice: 30,
-      retailPrice: 40,
-      quantity: 250,
-      unit: 'bunch',
-      location: 'Amritsar, PB',
-      harvestDate: '2026-09-05',
-      organic: true,
-      image: 'https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=800&auto=format&fit=crop&q=80'
     }
   ];
 
@@ -407,14 +410,18 @@ async function main() {
         price: p.price,
         quantity: p.quantity,
         unit: p.unit,
+        unitType: p.unitType,
+        unitSize: p.unitSize,
+        minimumOrderQuantity: p.minimumOrderQuantity,
+        qualityVideoUrl: p.qualityVideoUrl,
         location: p.location,
         harvestDate: p.harvestDate,
         organic: p.organic,
         deliveryAvailable: true,
         pickupAvailable: true,
         image: p.image,
-        rating: 4.5 + Math.random() * 0.4,
-        salesCount: Math.floor(20 + Math.random() * 150)
+        rating: 4.6 + Math.random() * 0.3,
+        salesCount: Math.floor(30 + Math.random() * 120)
       }
     });
     productCreatedIds.push(prod.id);
@@ -445,39 +452,53 @@ async function main() {
     }
   }
 
-  // 7. Create 15 Orders & Deliveries
-  const orderStatuses = ['DELIVERED', 'OUT_FOR_DELIVERY', 'PREPARING', 'CONFIRMED', 'DELIVERED'];
-  for (let i = 0; i < 15; i++) {
+  // 7. Create Diverse Demo Orders & Deliveries
+  const demoOrderConfigs = [
+    { status: 'OUT_FOR_DELIVERY', itemIndex: 0, qty: 5, address: 'Flat 402, Sunshine Heights, Bengaluru, KA', cancelStatus: null, reason: null },
+    { status: 'CONFIRMED', itemIndex: 1, qty: 3, address: 'Plot 18, Green Park Colony, Hyderabad, TS', cancelStatus: null, reason: null },
+    { status: 'PREPARING', itemIndex: 3, qty: 4, address: '12-A, Market Street, Chennai, TN', cancelStatus: null, reason: null },
+    { status: 'DELIVERED', itemIndex: 2, qty: 10, address: 'Sector 62, Noida, UP', cancelStatus: null, reason: null },
+    { status: 'CANCELLED', itemIndex: 4, qty: 2, address: 'MG Road, Pune, MH', cancelStatus: 'CANCELLED', reason: 'Quantity modified by buyer' },
+    { status: 'OUT_FOR_DELIVERY', itemIndex: 5, qty: 2, address: 'Lavelle Road, Bengaluru, KA', cancelStatus: null, reason: null },
+  ];
+
+  for (let i = 0; i < demoOrderConfigs.length; i++) {
+    const config = demoOrderConfigs[i];
     const buyerId = consumerUserIds[i % consumerUserIds.length];
-    const productId = productCreatedIds[i % productCreatedIds.length];
+    const productId = productCreatedIds[config.itemIndex % productCreatedIds.length];
     const farmerId = farmerUserIds[i % farmerUserIds.length];
-    const status = orderStatuses[i % orderStatuses.length];
+    const unit = productsData[config.itemIndex % productsData.length].unit;
+    const unitPrice = productsData[config.itemIndex % productsData.length].price;
 
     const order = await prisma.order.create({
       data: {
         orderNumber: `ORD-2026-${1000 + i}`,
         buyerId: buyerId,
         farmerId: farmerId,
-        totalAmount: (i + 1) * 160 + 50,
-        status: status,
+        totalAmount: (config.qty * unitPrice) + 300,
+        status: config.status,
         paymentMethod: i % 2 === 0 ? 'UPI' : 'CARD',
-        shippingAddress: `Sector ${i + 1}, Garden City, India`,
+        shippingAddress: config.address,
         deliveryType: 'DELIVERY',
+        cancellationStatus: config.cancelStatus,
+        cancellationReason: config.reason,
+        cancelledAt: config.cancelStatus ? new Date() : null,
+        estimatedArrival: config.status === 'OUT_FOR_DELIVERY' ? '25 minutes' : null,
         items: {
           create: [
             {
               productId: productId,
-              quantity: (i % 5) + 2,
-              price: 32 + i * 5,
-              unit: 'kg'
+              quantity: config.qty,
+              price: unitPrice,
+              unit: unit
             }
           ]
         },
         payment: {
           create: {
             transactionId: `TXN-DEMO-${888000 + i}`,
-            status: 'COMPLETED',
-            amount: (i + 1) * 160 + 50,
+            status: config.cancelStatus ? 'REFUNDED' : 'COMPLETED',
+            amount: (config.qty * unitPrice) + 300,
             method: i % 2 === 0 ? 'UPI' : 'CARD'
           }
         },
@@ -485,13 +506,21 @@ async function main() {
           create: {
             farmerId: farmerId,
             consumerId: buyerId,
-            pickupLocation: 'Farmer Gate / Mandi Hub',
-            deliveryLocation: `Consumer Residence Sector ${i + 1}`,
-            status: status === 'DELIVERED' ? 'DELIVERED' : 'IN_TRANSIT',
-            distanceKm: 8.5 + (i * 1.2),
-            estimatedMins: 25 + (i * 3),
+            pickupLocation: 'Farmer Gate / Mandi Hub, Madanapalle',
+            deliveryLocation: config.address,
+            status: config.status === 'DELIVERED' ? 'DELIVERED' : 'IN_TRANSIT',
+            driverName: 'Ravi Kumar',
+            driverPhone: '+91 98765 43210',
+            vehicleType: 'Tata Ace',
+            vehicleNumber: 'AP 03 TX 4821',
+            driverRating: 4.8,
+            currentLatitude: 13.5524 + (i * 0.02),
+            currentLongitude: 78.5020 + (i * 0.02),
+            lastLocationUpdate: new Date(),
+            distanceKm: 8.4 + (i * 1.5),
+            estimatedMins: 25 + (i * 4),
             routeDetails: JSON.stringify({
-              stops: ['Farm Gate', 'Hub 1 (Chittoor)', 'Hub 2 (City Central)', 'Consumer Address'],
+              stops: ['Madanapalle Farm Hub', 'Highway Checkpoint', 'City Distribution Hub', config.address],
               optimized: true
             })
           }
@@ -500,7 +529,7 @@ async function main() {
     });
 
     // Add review for delivered orders
-    if (status === 'DELIVERED') {
+    if (config.status === 'DELIVERED') {
       await prisma.review.create({
         data: {
           productId: productId,
@@ -573,7 +602,7 @@ async function main() {
     ]
   });
 
-  console.log('✅ FARMCONNECT database seed completed successfully!');
+  console.log('✅ KISSANCONNECT database seed completed successfully!');
 }
 
 main()

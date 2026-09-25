@@ -126,6 +126,33 @@ export const ProductDetailPage: React.FC = () => {
                 )}
               </div>
 
+              {/* Product Quality Video Section */}
+              {product.qualityVideoUrl && (
+                <div className="bg-white p-6 rounded-3xl border border-amber-200 bg-gradient-to-br from-amber-50/50 to-white shadow-sm space-y-3">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-sm font-extrabold text-amber-900 flex items-center gap-2">
+                      <span className="text-base">📹</span> Product Quality Video
+                    </h3>
+                    <span className="text-[10px] font-extrabold uppercase bg-amber-100 text-amber-900 px-2.5 py-1 rounded-full border border-amber-300">
+                      Uploaded by Farmer
+                    </span>
+                  </div>
+                  <p className="text-xs text-gray-600 font-medium">
+                    Watch actual farm produce freshness, sizing, and packaging verified by the farmer prior to dispatch.
+                  </p>
+                  <div className="relative rounded-2xl overflow-hidden bg-black aspect-video max-h-72 shadow-md">
+                    <video
+                      src={product.qualityVideoUrl}
+                      controls
+                      poster={product.image}
+                      className="w-full h-full object-contain"
+                    >
+                      Your browser does not support HTML5 video playback.
+                    </video>
+                  </div>
+                </div>
+              )}
+
               {/* Farmer Profile Box */}
               <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm space-y-4">
                 <h3 className="text-sm font-extrabold uppercase tracking-wider text-agri-primary">
@@ -188,13 +215,17 @@ export const ProductDetailPage: React.FC = () => {
                   </span>
                   <h1 className="text-3xl font-extrabold text-gray-900 mt-2">{product.name}</h1>
                   
-                  <div className="flex items-center space-x-4 mt-2 text-xs text-gray-500 font-semibold">
+                  <div className="flex items-center space-x-4 mt-2 text-xs text-gray-500 font-semibold flex-wrap gap-y-1">
                     <span className="flex items-center gap-1">
                       <Calendar className="w-3.5 h-3.5 text-agri-primary" /> Harvested: {product.harvestDate}
                     </span>
                     <span>•</span>
                     <span className="text-agri-dark font-extrabold bg-agri-pale px-2 py-0.5 rounded">
-                      Available: {product.quantity} {product.unit}
+                      Stock: {product.quantity} {product.unit}s ({product.unitSize || '20 kg'} / {product.unit})
+                    </span>
+                    <span>•</span>
+                    <span className="text-amber-800 font-bold bg-amber-50 px-2 py-0.5 rounded border border-amber-200">
+                      Min Order: {product.minimumOrderQuantity || 1} {product.unit}
                     </span>
                   </div>
                 </div>
@@ -211,6 +242,9 @@ export const ProductDetailPage: React.FC = () => {
                       <span className="text-3xl font-extrabold text-agri-dark">₹{product.price}</span>
                       <span className="text-sm text-gray-600 font-bold">/{product.unit}</span>
                     </div>
+                    <span className="text-[11px] text-gray-500 block mt-0.5">
+                      Package: {product.unitSize || 'Standard Farm Packaging'}
+                    </span>
                   </div>
                   
                   <div className="text-right">
@@ -222,19 +256,24 @@ export const ProductDetailPage: React.FC = () => {
 
                 {/* Quantity Selector & Action Buttons */}
                 <div className="space-y-4 pt-2">
-                  <div className="flex items-center space-x-4">
-                    <label className="text-xs font-bold text-gray-700">Select Quantity ({product.unit}):</label>
+                  <div className="flex items-center justify-between bg-gray-50 p-3.5 rounded-2xl border border-gray-100">
+                    <div>
+                      <label className="text-xs font-bold text-gray-700 block">Select Quantity ({product.unit}s):</label>
+                      <span className="text-[11px] text-gray-500">
+                        Subtotal: <strong className="text-agri-dark font-extrabold">₹{(quantity * product.price).toLocaleString('en-IN')}</strong>
+                      </span>
+                    </div>
                     <div className="flex items-center space-x-2">
                       <button
-                        onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                        className="w-9 h-9 rounded-xl bg-gray-100 font-bold text-gray-700 hover:bg-gray-200"
+                        onClick={() => setQuantity(Math.max(product.minimumOrderQuantity || 1, quantity - 1))}
+                        className="w-9 h-9 rounded-xl bg-white border border-gray-200 font-bold text-gray-700 hover:bg-gray-100 shadow-sm"
                       >
                         -
                       </button>
                       <span className="w-12 text-center font-bold text-base text-gray-900">{quantity}</span>
                       <button
                         onClick={() => setQuantity(Math.min(product.quantity, quantity + 1))}
-                        className="w-9 h-9 rounded-xl bg-gray-100 font-bold text-gray-700 hover:bg-gray-200"
+                        className="w-9 h-9 rounded-xl bg-white border border-gray-200 font-bold text-gray-700 hover:bg-gray-100 shadow-sm"
                       >
                         +
                       </button>
@@ -264,7 +303,15 @@ export const ProductDetailPage: React.FC = () => {
               </div>
 
               {/* Price Comparison Widget */}
-              {comparison && <PriceComparisonWidget comparison={comparison} />}
+              {comparison && (
+                <PriceComparisonWidget
+                  productName={product.name}
+                  unit={product.unit}
+                  farmConnectPrice={product.price}
+                  localMarketPrice={comparison.localMarketPrice}
+                  retailPrice={comparison.retailPrice}
+                />
+              )}
 
               {/* AI Demand Forecast Widget */}
               <DemandForecastWidget productId={product.id} />

@@ -1,6 +1,6 @@
 {
   "common": {
-    "app_name": "ఫార్మ్‌కనెక్ట్",
+    "app_name": "కిసాన్‌కనెక్ట్",
     "tagline": "రైతు పొలం నుండి నేరుగా మీ ఇంటికే.",
     "marketplace": "మార్కెట్‌ప్లేస్",
     "bulk_hub": "బల్క్ కొనుగోలు హబ్",
@@ -31,7 +31,27 @@
     "submit": "సమర్పించు",
     "accept": "అంగీకరించు",
     "reject": "తిరస్కరించు",
-    "track": "ట్రాక్ ఆర్డర్"
+    "track": "ట్రాక్ ఆర్డర్",
+    "min_order": "కనీస ఆర్డర్",
+    "unit_size": "యూనిట్ పరిమాణం",
+    "total_available": "మొత్తం అందుబాటులో ఉన్నది",
+    "quality_video": "పంట నాణ్యత వీడియో",
+    "watch_video": "నాణ్యత వీడియో చూడండి",
+    "uploaded_by_farmer": "రైతు అప్‌లోడ్ చేసారు",
+    "cancel_order": "ఆర్డర్ రద్దు చేయండి",
+    "keep_order": "ఆర్డర్ ఉంచండి",
+    "cancellation_reason": "రద్దు చేయడానికి కారణం",
+    "order_cancelled": "ఆర్డర్ రద్దు చేయబడింది",
+    "refund_initiated": "డెమో రీఫండ్ ప్రారంభించబడింది",
+    "delivery_partner": "డెలివరీ పార్టనర్",
+    "vehicle": "వాహనం",
+    "vehicle_number": "వాహన సంఖ్య",
+    "call_driver": "డ్రైవర్‌కి కాల్ చేయండి",
+    "view_on_map": "మ్యాప్‌లో చూడండి",
+    "demo_map": "డెమో ట్రాకింగ్ మ్యాప్",
+    "simulated_location": "సిమ్యులేటెడ్ లొకేషన్",
+    "estimated_arrival": "అంచనా సమయం",
+    "farmer_location": "రైతు ప్రాంతం"
   },
   "navbar": {
     "shop_produce": "తాజా పంట కొనండి",

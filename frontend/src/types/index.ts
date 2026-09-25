@@ -1,4 +1,4 @@
-export type Role = 'FARMER' | 'CONSUMER' | 'BULK_BUYER' | 'ADMIN';
+export type Role = 'FARMER' | 'FPO' | 'CONSUMER' | 'BULK_BUYER' | 'ADMIN';
 
 export interface User {
   id: string;
@@ -14,6 +14,16 @@ export interface User {
     farmLocation: string;
     organicCertified: boolean;
     farmingType: string;
+    bio?: string;
+    rating: number;
+    totalSales: number;
+  };
+  fpoProfile?: {
+    id: string;
+    fpoName: string;
+    location: string;
+    memberCount: number;
+    registrationNumber: string;
     bio?: string;
     rating: number;
     totalSales: number;
@@ -48,6 +58,10 @@ export interface Product {
   price: number;
   quantity: number;
   unit: string;
+  unitType?: string;
+  unitSize?: string;
+  minimumOrderQuantity?: number;
+  qualityVideoUrl?: string;
   location: string;
   harvestDate: string;
   organic: boolean;
@@ -114,6 +128,11 @@ export interface Order {
   paymentMethod: string;
   shippingAddress: string;
   deliveryType: string;
+  cancellationStatus?: string;
+  cancelledAt?: string;
+  cancellationReason?: string;
+  estimatedArrival?: string;
+  updatedAt?: string;
   createdAt: string;
   buyer?: User;
   farmer?: User;
@@ -138,6 +157,14 @@ export interface Delivery {
   pickupLocation: string;
   deliveryLocation: string;
   status: string;
+  driverName?: string;
+  driverPhone?: string;
+  vehicleType?: string;
+  vehicleNumber?: string;
+  driverRating?: number;
+  currentLatitude?: number;
+  currentLongitude?: number;
+  lastLocationUpdate?: string;
   distanceKm: number;
   estimatedMins: number;
   routeDetails?: string;

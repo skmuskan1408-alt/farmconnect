@@ -2,62 +2,364 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  font-family: 'Plus Jakarta Sans', 'Noto Sans Telugu', 'Noto Sans Devanagari', system-ui, sans-serif;
+}
+
+/* ==========================================================================
+   GLOBAL KISSANCONNECT THEME DESIGN TOKENS
+   ========================================================================== */
+
+:root,
+[data-theme="nature-farm"] {
+  --theme-bg: #fdfbf7;
+  --theme-surface: #ffffff;
+  --theme-card-bg: #ffffff;
+  --theme-card-border: rgba(226, 232, 240, 0.9);
+  --theme-card-shadow: rgba(15, 23, 42, 0.06);
+  --theme-text-primary: #0f172a;
+  --theme-text-secondary: #475569;
+  --theme-text-muted: #64748b;
+  --theme-primary: #10b981;
+  --theme-primary-hover: #059669;
+  --theme-accent: #f59e0b;
+  --theme-nav-bg: rgba(253, 251, 247, 0.92);
+  --theme-nav-border: #fef3c7;
+  --theme-badge-bg: #ecfdf5;
+  --theme-badge-text: #065f46;
+}
+
+[data-theme="cherry-blossom"] {
+  --theme-bg: #fff5f7;
+  --theme-surface: #ffffff;
+  --theme-card-bg: #ffffff;
+  --theme-card-border: rgba(251, 207, 232, 0.8);
+  --theme-card-shadow: rgba(157, 23, 77, 0.08);
+  --theme-text-primary: #831843;
+  --theme-text-secondary: #9d174d;
+  --theme-text-muted: #be185d;
+  --theme-primary: #ec4899;
+  --theme-primary-hover: #db2777;
+  --theme-accent: #f43f5e;
+  --theme-nav-bg: rgba(255, 245, 247, 0.92);
+  --theme-nav-border: #fbcfe8;
+  --theme-badge-bg: #fce7f3;
+  --theme-badge-text: #831843;
+}
+
+[data-theme="ocean"] {
+  --theme-bg: #f0f9ff;
+  --theme-surface: #ffffff;
+  --theme-card-bg: #ffffff;
+  --theme-card-border: rgba(186, 230, 253, 0.8);
+  --theme-card-shadow: rgba(3, 105, 161, 0.08);
+  --theme-text-primary: #0c4a6e;
+  --theme-text-secondary: #0369a1;
+  --theme-text-muted: #0284c7;
+  --theme-primary: #0284c7;
+  --theme-primary-hover: #0369a1;
+  --theme-accent: #06b6d4;
+  --theme-nav-bg: rgba(240, 249, 255, 0.92);
+  --theme-nav-border: #bae6fd;
+  --theme-badge-bg: #e0f2fe;
+  --theme-badge-text: #0369a1;
+}
+
+[data-theme="sky-glimpses"] {
+  --theme-bg: #f8fafc;
+  --theme-surface: #ffffff;
+  --theme-card-bg: #ffffff;
+  --theme-card-border: rgba(226, 232, 240, 0.9);
+  --theme-card-shadow: rgba(30, 41, 59, 0.06);
+  --theme-text-primary: #1e293b;
+  --theme-text-secondary: #475569;
+  --theme-text-muted: #64748b;
+  --theme-primary: #38bdf8;
+  --theme-primary-hover: #0284c7;
+  --theme-accent: #a855f7;
+  --theme-nav-bg: rgba(248, 250, 252, 0.92);
+  --theme-nav-border: #e2e8f0;
+  --theme-badge-bg: #f1f5f9;
+  --theme-badge-text: #0f172a;
+}
+
+[data-theme="desert-wind"] {
+  --theme-bg: #fefce8;
+  --theme-surface: #ffffff;
+  --theme-card-bg: #ffffff;
+  --theme-card-border: rgba(254, 240, 138, 0.8);
+  --theme-card-shadow: rgba(146, 64, 14, 0.08);
+  --theme-text-primary: #78350f;
+  --theme-text-secondary: #92400e;
+  --theme-text-muted: #b45309;
+  --theme-primary: #d97706;
+  --theme-primary-hover: #b45309;
+  --theme-accent: #ea580c;
+  --theme-nav-bg: rgba(254, 252, 232, 0.92);
+  --theme-nav-border: #fef08a;
+  --theme-badge-bg: #fef3c7;
+  --theme-badge-text: #78350f;
+}
+
+[data-theme="sunset"] {
+  --theme-bg: #fff7ed;
+  --theme-surface: #ffffff;
+  --theme-card-bg: #ffffff;
+  --theme-card-border: rgba(254, 215, 170, 0.8);
+  --theme-card-shadow: rgba(154, 52, 18, 0.08);
+  --theme-text-primary: #7c2d12;
+  --theme-text-secondary: #9a3412;
+  --theme-text-muted: #c2410c;
+  --theme-primary: #f97316;
+  --theme-primary-hover: #ea580c;
+  --theme-accent: #e11d48;
+  --theme-nav-bg: rgba(255, 247, 237, 0.92);
+  --theme-nav-border: #fed7aa;
+  --theme-badge-bg: #ffedd5;
+  --theme-badge-text: #7c2d12;
+}
+
+[data-theme="astra"] {
+  --theme-bg: #0f172a;
+  --theme-surface: #1e1b4b;
+  --theme-card-bg: #1e1b4b;
+  --theme-card-border: rgba(99, 102, 241, 0.4);
+  --theme-card-shadow: rgba(0, 0, 0, 0.4);
+  --theme-text-primary: #f8fafc;
+  --theme-text-secondary: #c7d2fe;
+  --theme-text-muted: #818cf8;
+  --theme-primary: #8b5cf6;
+  --theme-primary-hover: #7c3aed;
+  --theme-accent: #ec4899;
+  --theme-nav-bg: rgba(15, 23, 42, 0.92);
+  --theme-nav-border: #312e81;
+  --theme-badge-bg: #312e81;
+  --theme-badge-text: #e0e7ff;
+}
+
+[data-theme="night-farm"] {
+  --theme-bg: #022c22;
+  --theme-surface: #064e3b;
+  --theme-card-bg: #064e3b;
+  --theme-card-border: rgba(16, 185, 129, 0.3);
+  --theme-card-shadow: rgba(0, 0, 0, 0.4);
+  --theme-text-primary: #ecfdf5;
+  --theme-text-secondary: #a7f3d0;
+  --theme-text-muted: #6ee7b7;
+  --theme-primary: #10b981;
+  --theme-primary-hover: #059669;
+  --theme-accent: #fbbf24;
+  --theme-nav-bg: rgba(2, 44, 34, 0.92);
+  --theme-nav-border: #065f46;
+  --theme-badge-bg: #065f46;
+  --theme-badge-text: #a7f3d0;
+}
+
+[data-theme="minimal"] {
+  --theme-bg: #ffffff;
+  --theme-surface: #f8fafc;
+  --theme-card-bg: #ffffff;
+  --theme-card-border: rgba(226, 232, 240, 0.9);
+  --theme-card-shadow: rgba(15, 23, 42, 0.04);
+  --theme-text-primary: #0f172a;
+  --theme-text-secondary: #475569;
+  --theme-text-muted: #64748b;
+  --theme-primary: #334155;
+  --theme-primary-hover: #1e293b;
+  --theme-accent: #10b981;
+  --theme-nav-bg: rgba(255, 255, 255, 0.95);
+  --theme-nav-border: #e2e8f0;
+  --theme-badge-bg: #f1f5f9;
+  --theme-badge-text: #334155;
+}
+
 @layer base {
   body {
-    background-color: #f7faf7;
-    color: #1a2e26;
-    background-image: 
-      radial-gradient(circle at 10% 20%, rgba(82, 183, 136, 0.05) 0%, transparent 20%),
-      radial-gradient(circle at 90% 80%, rgba(233, 196, 106, 0.06) 0%, transparent 25%),
-      radial-gradient(circle at 50% 50%, rgba(232, 245, 233, 0.5) 0%, transparent 50%);
-    background-attachment: fixed;
+    background-color: var(--theme-bg);
+    color: var(--theme-text-primary);
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    overflow-x: hidden;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 }
 
-/* Cute Farm Glass Card */
-.cute-card {
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(82, 183, 136, 0.18);
-  box-shadow: 0 10px 30px -5px rgba(27, 67, 50, 0.05);
+/* Warm Light Environments */
+.bg-warm-ivory,
+.env-home-light {
+  background-color: var(--theme-bg) !important;
+  color: var(--theme-text-primary) !important;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.bg-soft-mint {
+  background-color: var(--theme-badge-bg) !important;
+}
+
+/* Visual First Colorful Card Styling */
+.visual-card {
+  background: var(--theme-card-bg) !important;
+  border-radius: 2rem;
+  border: 2px solid var(--theme-card-border) !important;
+  box-shadow: 0 16px 40px -10px var(--theme-card-shadow), 0 0 0 1px var(--theme-card-border) !important;
+  transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.visual-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 24px 50px -12px var(--theme-primary), 0 0 0 2px var(--theme-primary) !important;
+}
+
+/* 3D Visual Button */
+.btn-3d-primary {
+  background: linear-gradient(135deg, var(--theme-primary) 0%, var(--theme-primary-hover) 100%) !important;
+  color: #ffffff !important;
+  font-weight: 900;
   border-radius: 1.5rem;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 25px -4px var(--theme-primary), 0 4px 0 0 var(--theme-primary-hover);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.cute-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 20px 40px -10px rgba(45, 106, 79, 0.12);
-  border-color: rgba(82, 183, 136, 0.35);
+.btn-3d-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px -4px var(--theme-primary), 0 6px 0 0 var(--theme-primary-hover);
 }
 
-/* Cute Hero Background with Soft Sunbeam & Sprouts */
-.cute-farm-hero {
-  background: linear-gradient(135deg, #1b4332 0%, #2d6a4f 60%, #40916c 100%);
-  position: relative;
+.btn-3d-primary:active {
+  transform: translateY(2px);
+  box-shadow: 0 4px 15px -2px var(--theme-primary), 0 1px 0 0 var(--theme-primary-hover);
 }
 
-.cute-farm-hero::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 24px;
-  background-image: radial-gradient(circle at 12px -6px, transparent 12px, #f7faf7 13px);
-  background-size: 24px 24px;
+.btn-3d-amber {
+  background: linear-gradient(135deg, var(--theme-accent) 0%, var(--theme-primary) 100%) !important;
+  color: #ffffff !important;
+  font-weight: 900;
+  border-radius: 1.5rem;
+  box-shadow: 0 8px 25px -4px var(--theme-accent), 0 4px 0 0 var(--theme-primary-hover);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Decorative Leaf Watermark */
-.leaf-pattern {
-  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%232d6a4f' fill-opacity='0.03' fill-rule='evenodd'%3E%3Cpath d='M30 30c0-11 9-20 20-20v20H30zm-20 0c0-11 9-20 20-20v20H10z'/%3E%3C/g%3E%3C/svg%3E");
+.btn-3d-amber:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px -4px var(--theme-accent), 0 6px 0 0 var(--theme-primary-hover);
 }
 
-/* Soft Pill Badge */
-.cute-badge {
-  background: #e8f5e9;
-  color: #1b4332;
-  border: 1px solid rgba(82, 183, 136, 0.3);
-  font-weight: 700;
+/* Dynamic Text Contrast Helper */
+[data-theme="astra"] .text-slate-900,
+[data-theme="night-farm"] .text-slate-900 {
+  color: #f8fafc !important;
+}
+
+[data-theme="astra"] .text-slate-700,
+[data-theme="night-farm"] .text-slate-700,
+[data-theme="astra"] .text-slate-800,
+[data-theme="night-farm"] .text-slate-800 {
+  color: #e2e8f0 !important;
+}
+
+[data-theme="astra"] .text-slate-600,
+[data-theme="night-farm"] .text-slate-600,
+[data-theme="astra"] .text-slate-500,
+[data-theme="night-farm"] .text-slate-500 {
+  color: #cbd5e1 !important;
+}
+
+[data-theme="astra"] .bg-white,
+[data-theme="night-farm"] .bg-white {
+  background-color: var(--theme-surface) !important;
+  color: var(--theme-text-primary) !important;
+}
+
+/* Floating Animations */
+.float-gentle {
+  animation: floatGentle 5s ease-in-out infinite;
+}
+
+@keyframes floatGentle {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(3deg);
+  }
+}
+
+.cloud-drift {
+  animation: cloudDrift 35s linear infinite alternate;
+}
+
+@keyframes cloudDrift {
+  0% {
+    transform: translateX(-20px);
+  }
+  100% {
+    transform: translateX(40px);
+  }
+}
+
+/* Perspective & 3D */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--theme-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--theme-primary);
   border-radius: 9999px;
-  padding: 0.25rem 0.75rem;
 }
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--theme-primary-hover);
+}
+
+/* ==========================================================================
+   ANIMATED FARM & PRODUCE BACKGROUND SHOWER
+   ========================================================================== */
+
+@keyframes showeringProduce {
+  0% {
+    transform: translateY(-12vh) translateX(0px) rotate(0deg);
+    opacity: 0;
+  }
+  8% {
+    opacity: var(--item-opacity, 0.35);
+  }
+  50% {
+    transform: translateY(50vh) translateX(var(--sway-x, 25px)) rotate(var(--rotate-mid, 180deg));
+  }
+  92% {
+    opacity: var(--item-opacity, 0.35);
+  }
+  100% {
+    transform: translateY(112vh) translateX(calc(-1 * var(--sway-x, 25px))) rotate(var(--rotate-end, 360deg));
+    opacity: 0;
+  }
+}
+
+.animate-showering-produce {
+  animation: showeringProduce var(--item-duration, 25s) ease-in-out infinite;
+  animation-delay: var(--item-delay, 0s);
+  will-change: transform, opacity;
+  pointer-events: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-showering-produce {
+    animation: none !important;
+    opacity: 0.12 !important;
+    transform: translateY(0) !important;
+  }
+}
+

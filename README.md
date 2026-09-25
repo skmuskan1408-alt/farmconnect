@@ -1,8 +1,8 @@
-# FARMCONNECT — Digital Farmer-to-Consumer Marketplace (SIH26033)
+# KISSANCONNECT — Digital Farmer-to-Consumer Marketplace (SIH26033)
 
 > **Tagline:** *"From Farm to Your Table — Directly."*
 
-FARMCONNECT is a real full-stack web application built for **Smart India Hackathon 2026 (Problem Code: SIH26033 — Farmer-to-Consumer Platform)**. It eliminates multiple intermediary layers, connecting Farmers/FPOs directly with Consumers and Bulk Buyers.
+KISSANCONNECT is a real full-stack web application built for **Smart India Hackathon 2026 (Problem Code: SIH26033 — Farmer-to-Consumer Platform)**. It eliminates multiple intermediary layers, connecting Farmers/FPOs directly with Consumers and Bulk Buyers.
 
 The platform provides **AI Demand Forecasting**, **Smart Route Optimization**, **Transparent Price Comparison**, **Safe Demo Payments**, **Real-Time Order Tracking**, and **Role-Based Access Control**.
 
@@ -100,10 +100,10 @@ All accounts use password: **`password123`**
 
 | Role | Email | Name / Location | Key Features |
 |---|---|---|---|
-| **🌾 Farmer** | `ramesh.farmer@farmconnect.in` | Ramesh Kumar (Madanapalle, AP) | Manage produce, add items, view AI demand forecasts & route optimization |
+| **🌾 Farmer** | `ramesh.farmer@kissanconnect.in` | Ramesh Kumar (Madanapalle, AP) | Manage produce, add items, view AI demand forecasts & route optimization |
 | **🛒 Consumer** | `priya.consumer@gmail.com` | Priya Sharma (Bengaluru, KA) | Browse produce, compare prices, cart, checkout, order timeline tracking |
 | **🏢 Bulk Buyer** | `procure@bigbasketco.com` | BigBasket Procurement | Post high-volume requests, review farmer quotes, accept/reject offers |
-| **🛡️ Admin** | `admin@farmconnect.in` | System Administrator | Platform revenue analytics, user directory, system order audit ledger |
+| **🛡️ Admin** | `admin@kissanconnect.in` | System Administrator | Platform revenue analytics, user directory, system order audit ledger |
 
 ---
 
@@ -116,7 +116,7 @@ All accounts use password: **`password123`**
    - Uses Nearest Neighbor TSP (Traveling Salesperson Problem) heuristic algorithm for multi-stop dispatches.
    - Computes distance saved (km), time saved (mins), and efficiency gain %.
 3. **Transparent Price Comparison Engine (`priceComparisonService.ts`)**:
-   - Dynamic comparison showing FarmConnect direct farm gate prices vs Local Mandis vs Supermarket retail prices.
+   - Dynamic comparison showing KissanConnect direct farm gate prices vs Local Mandis vs Supermarket retail prices.
 4. **Safe Demo Payment System**:
    - Simulated payment modal for BHIM/UPI, Cards, and COD without requiring external payment gateway credentials during hackathon judging.
 

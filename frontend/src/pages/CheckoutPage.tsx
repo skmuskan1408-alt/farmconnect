@@ -173,21 +173,38 @@ export const CheckoutPage: React.FC = () => {
             {/* Summary */}
             <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm h-fit space-y-4">
               <h3 className="text-base font-bold text-gray-900 border-b border-gray-100 pb-3">
-                Items ({cart?.items.length || 0})
+                Order Breakdown ({cart?.items.length || 0} Items)
               </h3>
               
-              <div className="space-y-3 max-h-60 overflow-y-auto pr-1 text-xs">
+              <div className="space-y-3.5 max-h-60 overflow-y-auto pr-1 text-xs">
                 {cart?.items.map((item) => (
-                  <div key={item.id} className="flex justify-between items-center text-gray-700">
-                    <span className="font-medium line-clamp-1">{item.product.name} x {item.quantity}{item.product.unit}</span>
-                    <span className="font-bold text-gray-900">₹{item.product.price * item.quantity}</span>
+                  <div key={item.id} className="p-2.5 rounded-2xl bg-gray-50 border border-gray-100 space-y-1">
+                    <div className="flex justify-between items-center text-gray-900 font-bold">
+                      <span>{item.product.name}</span>
+                      <span>₹{(item.product.price * item.quantity).toLocaleString('en-IN')}</span>
+                    </div>
+                    <div className="flex justify-between text-[11px] text-gray-500">
+                      <span>{item.quantity} {item.product.unit}s × ₹{item.product.price}/{item.product.unit}</span>
+                      <span>({item.product.unitSize || '20 kg'} / {item.product.unit})</span>
+                    </div>
                   </div>
                 ))}
               </div>
 
+              <div className="space-y-2 text-xs pt-2 border-t border-gray-100">
+                <div className="flex justify-between text-gray-600">
+                  <span>Produce Subtotal</span>
+                  <span className="font-bold text-gray-900">₹{subtotal.toLocaleString('en-IN')}</span>
+                </div>
+                <div className="flex justify-between text-gray-600">
+                  <span>Logistics & Delivery</span>
+                  <span className="font-bold text-gray-900">₹300</span>
+                </div>
+              </div>
+
               <div className="border-t border-gray-100 pt-3 flex justify-between text-base font-extrabold text-gray-900">
-                <span>Total Due</span>
-                <span className="text-xl text-agri-dark">₹{subtotal}</span>
+                <span>Total Amount</span>
+                <span className="text-xl text-agri-dark">₹{(subtotal + 300).toLocaleString('en-IN')}</span>
               </div>
             </div>
 

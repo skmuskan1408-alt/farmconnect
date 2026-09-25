@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log('🌱 Starting FARMCONNECT database seeding...');
+  console.log('🌱 Starting KISSANCONNECT database seeding...');
 
   // Clean existing tables
   await prisma.farmerOffer.deleteMany();
@@ -33,7 +33,7 @@ async function main() {
   // 1. Create Admin
   const adminUser = await prisma.user.create({
     data: {
-      email: 'admin@farmconnect.in',
+      email: 'admin@kissanconnect.in',
       password: defaultPassword,
       name: 'System Admin',
       phone: '+91 9876543210',
@@ -59,16 +59,16 @@ async function main() {
 
   // 3. Create 10 Farmers
   const farmersList = [
-    { name: 'Ramesh Kumar', email: 'ramesh.farmer@farmconnect.in', phone: '+91 9812345671', location: 'Madanapalle, Andhra Pradesh', farmName: 'Green Valley Agro Farm', organic: true, type: 'Natural & Hydroponic', bio: 'Pioneer in organic tomato and vegetable cultivation with 15+ years of experience.' },
-    { name: 'Suresh Patel', email: 'suresh.farmer@farmconnect.in', phone: '+91 9812345672', location: 'Nashik, Maharashtra', farmName: 'Sahyadri Agri Farms', organic: true, type: 'Organic Certified', bio: 'Specialized in premium Nashik onions and exporter-grade grapes.' },
-    { name: 'Anita Devi', email: 'anita.farmer@farmconnect.in', phone: '+91 9812345673', location: 'Kolar, Karnataka', farmName: 'Surya Organic Produce', organic: true, type: 'Permaculture', bio: 'Empowering women in agriculture; focused on zero-pesticide root crops.' },
-    { name: 'Baldev Singh', email: 'baldev.farmer@farmconnect.in', phone: '+91 9812345674', location: 'Ludhiana, Punjab', farmName: 'Golden Fields Wheat & Paddy', organic: false, type: 'Traditional Mechanized', bio: 'Direct grain producer supplying top quality Sharbati wheat and basmati rice.' },
-    { name: 'Rajesh Gowda', email: 'rajesh.farmer@farmconnect.in', phone: '+91 9812345675', location: 'Mandya, Karnataka', farmName: 'Kaveri Basin Organic Farm', organic: true, type: 'Vedic Farming', bio: 'Focuses on ancient grain varieties, jaggery, and chemical-free fruits.' },
-    { name: 'Vikram Reddy', email: 'vikram.farmer@farmconnect.in', phone: '+91 9812345676', location: 'Guntur, Andhra Pradesh', farmName: 'Mirchi King Spices Farm', organic: false, type: 'Precision Agriculture', bio: 'Renowned for world-famous Guntur Sanam and Teja red chillies.' },
-    { name: 'Gurpreet Kaur', email: 'gurpreet.farmer@farmconnect.in', phone: '+91 9812345677', location: 'Amritsar, Punjab', farmName: 'Amrit Organic Dairy & Produce', organic: true, type: 'Biodynamic', bio: 'Combining A2 dairy farming with seasonal organic green vegetables.' },
-    { name: 'Devendra Kulkarni', email: 'devendra.farmer@farmconnect.in', phone: '+91 9812345678', location: 'Ratnagiri, Maharashtra', farmName: 'Konkan Orchards', organic: true, type: 'GI Tagged Mango Agro', bio: 'Authentic Ratnagiri Alphonso mango grower with GI tagging.' },
-    { name: 'Kavitha Nair', email: 'kavitha.farmer@farmconnect.in', phone: '+91 9812345679', location: 'Wayanad, Kerala', farmName: 'Highland Spice Plantation', organic: true, type: 'Shade Grown Organic', bio: 'Harvesting premium turmeric, black pepper, and cardamom straight from Wayanad hills.' },
-    { name: 'Mahesh Sharma', email: 'mahesh.farmer@farmconnect.in', phone: '+91 9812345680', location: 'Shimla, Himachal Pradesh', farmName: 'Apple Valley Orchards', organic: false, type: 'Himalayan Horticulture', bio: 'Fresh crisp Shimla apples and cherries grown in clean mountain air.' }
+    { name: 'Ramesh Kumar', email: 'ramesh.farmer@kissanconnect.in', phone: '+91 9812345671', location: 'Madanapalle, Andhra Pradesh', farmName: 'Green Valley Agro Farm', organic: true, type: 'Natural & Hydroponic', bio: 'Pioneer in organic tomato and vegetable cultivation with 15+ years of experience.' },
+    { name: 'Suresh Patel', email: 'suresh.farmer@kissanconnect.in', phone: '+91 9812345672', location: 'Nashik, Maharashtra', farmName: 'Sahyadri Agri Farms', organic: true, type: 'Organic Certified', bio: 'Specialized in premium Nashik onions and exporter-grade grapes.' },
+    { name: 'Anita Devi', email: 'anita.farmer@kissanconnect.in', phone: '+91 9812345673', location: 'Kolar, Karnataka', farmName: 'Surya Organic Produce', organic: true, type: 'Permaculture', bio: 'Empowering women in agriculture; focused on zero-pesticide root crops.' },
+    { name: 'Baldev Singh', email: 'baldev.farmer@kissanconnect.in', phone: '+91 9812345674', location: 'Ludhiana, Punjab', farmName: 'Golden Fields Wheat & Paddy', organic: false, type: 'Traditional Mechanized', bio: 'Direct grain producer supplying top quality Sharbati wheat and basmati rice.' },
+    { name: 'Rajesh Gowda', email: 'rajesh.farmer@kissanconnect.in', phone: '+91 9812345675', location: 'Mandya, Karnataka', farmName: 'Kaveri Basin Organic Farm', organic: true, type: 'Vedic Farming', bio: 'Focuses on ancient grain varieties, jaggery, and chemical-free fruits.' },
+    { name: 'Vikram Reddy', email: 'vikram.farmer@kissanconnect.in', phone: '+91 9812345676', location: 'Guntur, Andhra Pradesh', farmName: 'Mirchi King Spices Farm', organic: false, type: 'Precision Agriculture', bio: 'Renowned for world-famous Guntur Sanam and Teja red chillies.' },
+    { name: 'Gurpreet Kaur', email: 'gurpreet.farmer@kissanconnect.in', phone: '+91 9812345677', location: 'Amritsar, Punjab', farmName: 'Amrit Organic Dairy & Produce', organic: true, type: 'Biodynamic', bio: 'Combining A2 dairy farming with seasonal organic green vegetables.' },
+    { name: 'Devendra Kulkarni', email: 'devendra.farmer@kissanconnect.in', phone: '+91 9812345678', location: 'Ratnagiri, Maharashtra', farmName: 'Konkan Orchards', organic: true, type: 'GI Tagged Mango Agro', bio: 'Authentic Ratnagiri Alphonso mango grower with GI tagging.' },
+    { name: 'Kavitha Nair', email: 'kavitha.farmer@kissanconnect.in', phone: '+91 9812345679', location: 'Wayanad, Kerala', farmName: 'Highland Spice Plantation', organic: true, type: 'Shade Grown Organic', bio: 'Harvesting premium turmeric, black pepper, and cardamom straight from Wayanad hills.' },
+    { name: 'Mahesh Sharma', email: 'mahesh.farmer@kissanconnect.in', phone: '+91 9812345680', location: 'Shimla, Himachal Pradesh', farmName: 'Apple Valley Orchards', organic: false, type: 'Himalayan Horticulture', bio: 'Fresh crisp Shimla apples and cherries grown in clean mountain air.' }
   ];
 
   const farmerUserIds: string[] = [];
@@ -573,7 +573,7 @@ async function main() {
     ]
   });
 
-  console.log('✅ FARMCONNECT database seed completed successfully!');
+  console.log('✅ KISSANCONNECT database seed completed successfully!');
 }
 
 main()

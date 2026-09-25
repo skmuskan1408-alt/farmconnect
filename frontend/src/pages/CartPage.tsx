@@ -72,25 +72,45 @@ export const CartPage: React.FC = () => {
                     </div>
 
                     <div className="flex items-center space-x-6">
-                      {/* Quantity Controls */}
-                      <div className="flex items-center space-x-2 bg-gray-50 px-3 py-1.5 rounded-xl border border-gray-200">
-                        <button
-                          onClick={() => updateCartItem(item.id, item.quantity - 1)}
-                          className="w-7 h-7 rounded-lg bg-white font-bold text-gray-700 shadow-2xs hover:bg-gray-100"
-                        >
-                          -
-                        </button>
-                        <span className="w-8 text-center font-bold text-sm text-gray-900">{item.quantity}</span>
-                        <button
-                          onClick={() => updateCartItem(item.id, item.quantity + 1)}
-                          className="w-7 h-7 rounded-lg bg-white font-bold text-gray-700 shadow-2xs hover:bg-gray-100"
-                        >
-                          +
-                        </button>
+                      {/* Quantity Controls with Bulk Unit Enforcement */}
+                      <div className="flex flex-col items-end">
+                        <div className="flex items-center space-x-2 bg-gray-50 px-3 py-1.5 rounded-xl border border-gray-200">
+                          <button
+                            onClick={() => {
+                              const minQty = item.product.minimumOrderQuantity || 1;
+                              if (item.quantity - 1 < minQty) {
+                                alert(`Minimum order quantity for ${item.product.name} is ${minQty} ${item.product.unit}`);
+                                return;
+                              }
+                              updateCartItem(item.id, item.quantity - 1);
+                            }}
+                            className="w-7 h-7 rounded-lg bg-white font-bold text-gray-700 shadow-2xs hover:bg-gray-100"
+                          >
+                            -
+                          </button>
+                          <span className="w-16 text-center font-bold text-xs text-gray-900">
+                            {item.quantity} {item.product.unit}s
+                          </span>
+                          <button
+                            onClick={() => {
+                              if (item.quantity + 1 > item.product.quantity) {
+                                alert(`Only ${item.product.quantity} ${item.product.unit}s available in stock`);
+                                return;
+                              }
+                              updateCartItem(item.id, item.quantity + 1);
+                            }}
+                            className="w-7 h-7 rounded-lg bg-white font-bold text-gray-700 shadow-2xs hover:bg-gray-100"
+                          >
+                            +
+                          </button>
+                        </div>
+                        <span className="text-[10px] text-gray-400 mt-1">
+                          Available: {item.product.quantity} {item.product.unit}s | Min: {item.product.minimumOrderQuantity || 1}
+                        </span>
                       </div>
 
-                      <span className="text-lg font-extrabold text-gray-900 w-20 text-right">
-                        ₹{item.product.price * item.quantity}
+                      <span className="text-lg font-extrabold text-gray-900 w-24 text-right">
+                        ₹{(item.product.price * item.quantity).toLocaleString('en-IN')}
                       </span>
 
                       <button

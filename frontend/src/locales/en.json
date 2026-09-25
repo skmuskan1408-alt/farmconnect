@@ -1,6 +1,6 @@
 {
   "common": {
-    "app_name": "FARMCONNECT",
+    "app_name": "KissanConnect",
     "tagline": "From Farm to Your Table — Directly.",
     "marketplace": "Marketplace",
     "bulk_hub": "Bulk Buyer Hub",
@@ -31,7 +31,27 @@
     "submit": "Submit",
     "accept": "Accept",
     "reject": "Reject",
-    "track": "Track Timeline"
+    "track": "Track Timeline",
+    "min_order": "Minimum Order",
+    "unit_size": "Unit Size",
+    "total_available": "Total Available",
+    "quality_video": "Product Quality Video",
+    "watch_video": "Watch Quality Video",
+    "uploaded_by_farmer": "Uploaded by Farmer",
+    "cancel_order": "Cancel Order",
+    "keep_order": "Keep Order",
+    "cancellation_reason": "Cancellation Reason",
+    "order_cancelled": "Order Cancelled",
+    "refund_initiated": "Demo Refund Initiated",
+    "delivery_partner": "Delivery Partner",
+    "vehicle": "Vehicle",
+    "vehicle_number": "Vehicle Number",
+    "call_driver": "Call Driver",
+    "view_on_map": "View on Map",
+    "demo_map": "Demo Tracking Map",
+    "simulated_location": "Simulated Location",
+    "estimated_arrival": "Estimated Arrival",
+    "farmer_location": "Farmer Location"
   },
   "navbar": {
     "shop_produce": "Shop Fresh Produce",
@@ -103,7 +123,8 @@
     "ready_pickup": "Ready for Pickup",
     "picked_up": "Picked Up",
     "out_delivery": "Out for Delivery",
-    "delivered": "Delivered"
+    "delivered": "Delivered",
+    "driver_assigned": "Driver Assigned"
   },
   "dashboards": {
     "farmer_title": "Farmer Management Dashboard",

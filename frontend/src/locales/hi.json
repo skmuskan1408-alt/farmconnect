@@ -1,6 +1,6 @@
 {
   "common": {
-    "app_name": "फार्मकनेक्ट",
+    "app_name": "किसानकनेक्ट",
     "tagline": "किसान के खेत से सीधे आपकी थाली तक।",
     "marketplace": "मार्केटप्लेस",
     "bulk_hub": "थोक खरीदार हब",
@@ -31,7 +31,27 @@
     "submit": "जमा करें",
     "accept": "स्वीकार करें",
     "reject": "अस्वीकार करें",
-    "track": "ऑर्डर ट्रैक करें"
+    "track": "ऑर्डर ट्रैक करें",
+    "min_order": "न्यूनतम ऑर्डर",
+    "unit_size": "इकाई का आकार",
+    "total_available": "कुल उपलब्ध मात्रा",
+    "quality_video": "उत्पाद गुणवत्ता वीडियो",
+    "watch_video": "गुणवत्ता वीडियो देखें",
+    "uploaded_by_farmer": "किसान द्वारा अपलोड किया गया",
+    "cancel_order": "ऑर्डर रद्द करें",
+    "keep_order": "ऑर्डर जारी रखें",
+    "cancellation_reason": "रद्द करने का कारण",
+    "order_cancelled": "ऑर्डर रद्द कर दिया गया",
+    "refund_initiated": "डेमो रिफंड शुरू किया गया",
+    "delivery_partner": "डिलीवरी पार्टनर",
+    "vehicle": "वाहन",
+    "vehicle_number": "वाहन संख्या",
+    "call_driver": "ड्राइवर को कॉल करें",
+    "view_on_map": "नक्शे पर देखें",
+    "demo_map": "डेमो ट्रैकिंग मैप",
+    "simulated_location": "सिम्युलेटेड लोकेशन",
+    "estimated_arrival": "अनुमानित आगमन",
+    "farmer_location": "किसान का स्थान"
   },
   "navbar": {
     "shop_produce": "ताजी उपज खरीदें",

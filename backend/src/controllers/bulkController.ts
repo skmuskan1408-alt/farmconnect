@@ -12,7 +12,7 @@ export const getBulkRequests = async (req: AuthRequest, res: Response) => {
         buyer: { select: { id: true, name: true, location: true, buyerProfile: true } },
         offers: {
           include: {
-            farmer: { select: { id: true, name: true, location: true, farmerProfile: true } }
+            farmer: { select: { id: true, name: true, location: true, role: true, farmerProfile: true, fpoProfile: true } }
           }
         }
       }
@@ -56,8 +56,8 @@ export const createBulkRequest = async (req: AuthRequest, res: Response) => {
 
 export const createOffer = async (req: AuthRequest, res: Response) => {
   try {
-    if (!req.user || req.user.role !== 'FARMER') {
-      return res.status(403).json({ message: 'Only farmers can submit offers for bulk requests' });
+    if (!req.user || (req.user.role !== 'FARMER' && req.user.role !== 'FPO')) {
+      return res.status(403).json({ message: 'Only farmers and FPOs can submit offers for bulk requests' });
     }
 
     const { id } = req.params; // bulkRequestId
@@ -77,11 +77,12 @@ export const createOffer = async (req: AuthRequest, res: Response) => {
     // Notify bulk buyer
     const bulkReq = await prisma.bulkRequest.findUnique({ where: { id } });
     if (bulkReq) {
+      const providerType = req.user.role === 'FPO' ? 'An FPO' : 'A farmer';
       await prisma.notification.create({
         data: {
           userId: bulkReq.buyerId,
           title: 'New Offer on Bulk Request! 🏷️',
-          message: `A farmer offered ₹${pricePerUnit}/${bulkReq.unit} for your request "${bulkReq.productName}".`,
+          message: `${providerType} offered ₹${pricePerUnit}/${bulkReq.unit} for your request "${bulkReq.productName}".`,
           type: 'ORDER'
         }
       });
@@ -102,6 +103,27 @@ export const updateOfferStatus = async (req: AuthRequest, res: Response) => {
       where: { id },
       data: { status }
     });
+
+    // If accepted, mark bulk request as IN_NEGOTIATION or CLOSED
+    if (status === 'ACCEPTED') {
+      const bulkReq = await prisma.bulkRequest.findUnique({ where: { id: offer.bulkRequestId } });
+      if (bulkReq) {
+        await prisma.bulkRequest.update({
+          where: { id: offer.bulkRequestId },
+          data: { status: 'CLOSED' }
+        });
+
+        // Notify farmer/FPO
+        await prisma.notification.create({
+          data: {
+            userId: offer.farmerId,
+            title: 'Bulk Offer Accepted! 🎉',
+            message: `Your offer for "${bulkReq.productName}" was accepted by the buyer!`,
+            type: 'ORDER'
+          }
+        });
+      }
+    }
 
     res.json({ message: `Offer ${status.toLowerCase()}`, offer });
   } catch (error: any) {

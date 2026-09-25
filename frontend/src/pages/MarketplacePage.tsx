@@ -4,7 +4,7 @@ import { MainLayout } from '../layouts/MainLayout';
 import { ProductCard } from '../components/product/ProductCard';
 import api from '../services/api';
 import { Product, Category } from '../types';
-import { Search, CheckCircle2 } from 'lucide-react';
+import { Search, CheckCircle2, Filter, Sparkles } from 'lucide-react';
 
 export const MarketplacePage: React.FC = () => {
   const { t } = useTranslation();
@@ -48,36 +48,36 @@ export const MarketplacePage: React.FC = () => {
 
   return (
     <MainLayout>
-      <div className="bg-[#f8faf9] min-h-screen py-10">
+      <div className="env-marketplace min-h-screen py-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           {/* Header Banner */}
-          <div className="bg-agri-dark text-white p-8 sm:p-10 rounded-3xl shadow-xl mb-10 relative overflow-hidden">
-            <div className="max-w-2xl relative z-10">
-              <span className="bg-agri-primary text-agri-accent text-xs font-extrabold uppercase tracking-widest px-3 py-1 rounded-full">
-                {t('common.app_name')} {t('common.marketplace')}
+          <div className="bg-gradient-to-r from-slate-900 via-slate-950 to-emerald-950 text-white p-8 sm:p-12 rounded-3xl shadow-2xl mb-10 relative overflow-hidden border border-emerald-500/20">
+            <div className="max-w-2xl relative z-10 space-y-3">
+              <span className="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-xs font-black uppercase tracking-widest px-3.5 py-1 rounded-full inline-flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5 text-amber-400" /> Direct Farm Marketplace
               </span>
-              <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight mt-2 text-white">
-                {t('marketplace.title')}
+              <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-white">
+                Fresh Harvest Direct Marketplace
               </h1>
-              <p className="text-sm text-agri-pale/80 mt-2 font-medium">
-                {t('marketplace.subtitle')}
+              <p className="text-sm text-slate-300 font-medium">
+                Buy fresh produce direct from verified local farmers and FPOs at zero middleman markup.
               </p>
             </div>
           </div>
 
           {/* Search & Filter Bar */}
-          <div className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 mb-8 space-y-6">
+          <div className="glass-light-card p-6 rounded-3xl mb-8 space-y-6">
             
             <form onSubmit={handleSearchSubmit} className="flex flex-col sm:flex-row gap-4">
               <div className="relative flex-1">
-                <Search className="w-5 h-5 text-gray-400 absolute left-4 top-3.5" />
+                <Search className="w-5 h-5 text-slate-400 absolute left-4 top-3.5" />
                 <input
                   type="text"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  placeholder={t('marketplace.search_placeholder')}
-                  className="w-full pl-12 pr-4 py-3 rounded-2xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-agri-primary text-sm font-medium"
+                  placeholder="Search tomatoes, potatoes, Alphonso mangoes, organic rice..."
+                  className="w-full pl-12 pr-4 py-3 rounded-2xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm font-semibold text-slate-900"
                 />
               </div>
 
@@ -85,19 +85,19 @@ export const MarketplacePage: React.FC = () => {
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
-                  className="px-4 py-3 rounded-2xl border border-gray-200 text-sm font-semibold text-gray-700 focus:outline-none"
+                  className="px-4 py-3 rounded-2xl border border-slate-200 text-xs font-extrabold text-slate-700 focus:outline-none bg-white"
                 >
-                  <option value="newest">{t('marketplace.sort_newest')}</option>
-                  <option value="price_low">{t('marketplace.sort_price_low')}</option>
-                  <option value="price_high">{t('marketplace.sort_price_high')}</option>
-                  <option value="rating">{t('marketplace.sort_rating')}</option>
+                  <option value="newest">Sort by Newest</option>
+                  <option value="price_low">Price: Low to High</option>
+                  <option value="price_high">Price: High to Low</option>
+                  <option value="rating">Highest Rated</option>
                 </select>
 
                 <button
                   type="submit"
-                  className="px-6 py-3 rounded-2xl bg-agri-dark text-white font-bold text-sm hover:bg-agri-primary transition-all shadow-md"
+                  className="px-6 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-black text-xs transition-all shadow-lg"
                 >
-                  {t('common.submit')}
+                  Search
                 </button>
               </div>
             </form>
@@ -108,11 +108,11 @@ export const MarketplacePage: React.FC = () => {
                 onClick={() => setSelectedCategory('all')}
                 className={`px-4 py-2 rounded-xl text-xs font-extrabold whitespace-nowrap transition-all ${
                   selectedCategory === 'all'
-                    ? 'bg-agri-dark text-white shadow'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    ? 'bg-slate-900 text-white shadow'
+                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
                 }`}
               >
-                {t('marketplace.all_produce')}
+                All Produce
               </button>
               {categories.map((cat) => (
                 <button
@@ -120,8 +120,8 @@ export const MarketplacePage: React.FC = () => {
                   onClick={() => setSelectedCategory(cat.slug)}
                   className={`px-4 py-2 rounded-xl text-xs font-extrabold whitespace-nowrap transition-all flex items-center space-x-1.5 ${
                     selectedCategory === cat.slug
-                      ? 'bg-agri-dark text-white shadow'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      ? 'bg-slate-900 text-white shadow'
+                      : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
                   }`}
                 >
                   <span>{cat.icon}</span>
@@ -133,12 +133,12 @@ export const MarketplacePage: React.FC = () => {
                 onClick={() => setOrganicOnly(!organicOnly)}
                 className={`px-4 py-2 rounded-xl text-xs font-extrabold whitespace-nowrap transition-all border flex items-center space-x-1.5 ${
                   organicOnly
-                    ? 'bg-agri-primary text-white border-agri-primary shadow'
-                    : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-50'
+                    ? 'bg-emerald-600 text-white border-emerald-600 shadow'
+                    : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
                 }`}
               >
-                <CheckCircle2 className="w-3.5 h-3.5 text-agri-accent" />
-                <span>{t('marketplace.organic_only')}</span>
+                <CheckCircle2 className="w-3.5 h-3.5 text-amber-400" />
+                <span>100% Organic Only</span>
               </button>
             </div>
 
@@ -146,14 +146,15 @@ export const MarketplacePage: React.FC = () => {
 
           {/* Product Grid */}
           {loading ? (
-            <div className="py-20 text-center">
-              <div className="w-12 h-12 border-4 border-agri-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-              <p className="text-gray-600 font-bold text-sm">...</p>
+            <div className="py-20 text-center space-y-3">
+              <div className="w-12 h-12 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
+              <p className="text-slate-600 font-extrabold text-sm">Fetching fresh harvest items...</p>
             </div>
           ) : products.length === 0 ? (
-            <div className="bg-white rounded-3xl p-12 text-center border border-gray-100">
-              <span className="text-4xl">🌾</span>
-              <h3 className="text-lg font-bold text-gray-900 mt-2">{t('marketplace.no_produce')}</h3>
+            <div className="glass-light-card rounded-3xl p-12 text-center border border-slate-200 space-y-3">
+              <span className="text-5xl">🌾</span>
+              <h3 className="text-lg font-black text-slate-900">No produce items match your search.</h3>
+              <p className="text-xs text-slate-500">Try clearing filters or searching for different crops.</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">

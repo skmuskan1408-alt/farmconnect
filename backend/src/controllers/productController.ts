@@ -56,7 +56,9 @@ export const getProducts = async (req: Request, res: Response) => {
             id: true,
             name: true,
             location: true,
-            farmerProfile: true
+            role: true,
+            farmerProfile: true,
+            fpoProfile: true
           }
         },
         reviews: {
@@ -88,7 +90,9 @@ export const getProductById = async (req: Request, res: Response) => {
             email: true,
             phone: true,
             location: true,
-            farmerProfile: true
+            role: true,
+            farmerProfile: true,
+            fpoProfile: true
           }
         },
         reviews: {
@@ -114,8 +118,8 @@ export const getProductById = async (req: Request, res: Response) => {
 
 export const createProduct = async (req: AuthRequest, res: Response) => {
   try {
-    if (!req.user || req.user.role !== 'FARMER') {
-      return res.status(403).json({ message: 'Only farmers can create products' });
+    if (!req.user || (req.user.role !== 'FARMER' && req.user.role !== 'FPO' && req.user.role !== 'ADMIN')) {
+      return res.status(403).json({ message: 'Only farmers and FPOs can create products' });
     }
 
     const {
@@ -125,6 +129,10 @@ export const createProduct = async (req: AuthRequest, res: Response) => {
       price,
       quantity,
       unit,
+      unitType,
+      unitSize,
+      minimumOrderQuantity,
+      qualityVideoUrl,
       location,
       harvestDate,
       organic,
@@ -152,7 +160,11 @@ export const createProduct = async (req: AuthRequest, res: Response) => {
         description,
         price: parseFloat(price),
         quantity: parseFloat(quantity),
-        unit: unit || 'kg',
+        unit: unit || 'Crate',
+        unitType: unitType || 'CRATE',
+        unitSize: unitSize || '20 kg',
+        minimumOrderQuantity: minimumOrderQuantity ? parseFloat(minimumOrderQuantity) : 1.0,
+        qualityVideoUrl: qualityVideoUrl || null,
         location: location || 'India',
         harvestDate: harvestDate || new Date().toISOString().split('T')[0],
         organic: organic ?? true,
@@ -196,7 +208,8 @@ export const updateProduct = async (req: AuthRequest, res: Response) => {
       data: {
         ...req.body,
         price: req.body.price ? parseFloat(req.body.price) : undefined,
-        quantity: req.body.quantity ? parseFloat(req.body.quantity) : undefined
+        quantity: req.body.quantity ? parseFloat(req.body.quantity) : undefined,
+        minimumOrderQuantity: req.body.minimumOrderQuantity ? parseFloat(req.body.minimumOrderQuantity) : undefined
       }
     });
 

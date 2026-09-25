@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../services/api';
 import { RouteOptimization } from '../../types';
-import { Truck, Navigation, CheckCircle, ArrowRight, Zap, MapPin } from 'lucide-react';
+import { Truck, ArrowRight, Zap, MapPin } from 'lucide-react';
+import { useLanguage } from '../../context/LanguageContext';
 
 export const RouteOptimizationWidget: React.FC = () => {
+  const { t } = useLanguage();
   const [data, setData] = useState<RouteOptimization | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -22,7 +24,7 @@ export const RouteOptimizationWidget: React.FC = () => {
   }, []);
 
   if (loading) {
-    return <div className="p-6 text-center text-gray-500">Calculating optimal delivery TSP route...</div>;
+    return <div className="p-6 text-center text-gray-500 font-semibold">{t('common.loading')}</div>;
   }
 
   if (!data) return null;
@@ -31,18 +33,23 @@ export const RouteOptimizationWidget: React.FC = () => {
     <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-gray-100 gap-2">
         <div>
-          <span className="text-[10px] font-extrabold tracking-widest text-agri-primary uppercase bg-agri-pale px-2.5 py-1 rounded-md">
-            SIH Smart Logistics Engine
-          </span>
+          <div className="flex items-center gap-2">
+            <span className="text-[10px] font-extrabold tracking-widest text-agri-primary uppercase bg-agri-pale px-2.5 py-1 rounded-md">
+              {t('common.smart_logistics')}
+            </span>
+            <span className="text-[10px] font-bold text-amber-800 bg-amber-100 border border-amber-300 px-2.5 py-0.5 rounded-full">
+              Route Optimization Prototype
+            </span>
+          </div>
           <h3 className="text-xl font-extrabold text-gray-900 mt-1 flex items-center gap-2">
             <Truck className="w-5 h-5 text-agri-primary" />
-            Delivery Route Optimization (Nearest Neighbor Algorithm)
+            LOGISTICS AI / ROUTE OPTIMIZATION
           </h3>
         </div>
         <div className="flex items-center gap-2">
           <span className="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1.5 rounded-xl flex items-center gap-1">
             <Zap className="w-3.5 h-3.5 fill-emerald-600 text-emerald-600" />
-            {data.efficiencyGainPercent}% Efficiency Gain
+            {data.efficiencyGainPercent}% Efficiency
           </span>
         </div>
       </div>
@@ -65,7 +72,7 @@ export const RouteOptimizationWidget: React.FC = () => {
         </div>
 
         <div className="bg-yellow-50 p-4 rounded-2xl border border-yellow-100 text-center">
-          <span className="text-xs text-yellow-800 font-semibold block">Est. Time Saved</span>
+          <span className="text-xs text-yellow-800 font-semibold block">Time Saved</span>
           <span className="text-xl font-extrabold text-yellow-700">~{data.timeSavedMins} Mins</span>
         </div>
       </div>
@@ -90,11 +97,6 @@ export const RouteOptimizationWidget: React.FC = () => {
             ))}
           </div>
         </div>
-      </div>
-
-      <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between text-xs text-gray-400">
-        <span>* Prototype TSP Nearest Neighbor Heuristic Algorithm</span>
-        <span className="font-semibold text-agri-dark">FarmConnect Logistics v1.0</span>
       </div>
 
     </div>

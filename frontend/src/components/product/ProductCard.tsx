@@ -86,12 +86,27 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             {product.description}
           </p>
 
-          {/* Farmer Tag */}
-          <div className="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between text-xs text-gray-600">
-            <span>{t('common.farmer')}: <strong className="text-gray-900 font-bold">{product.farmer?.name || 'Local Farmer'}</strong></span>
-            <span className="text-agri-dark font-extrabold bg-agri-pastel px-2 py-0.5 rounded-full text-[11px]">
-              {product.quantity} {product.unit} {t('common.available')}
-            </span>
+          {/* Farmer & Bulk Details */}
+          <div className="mt-3 pt-3 border-t border-gray-100 space-y-1 text-xs text-gray-600">
+            <div className="flex items-center justify-between">
+              <span>{t('common.farmer')}: <strong className="text-gray-900 font-bold">{product.farmer?.name || 'Local Farmer'}</strong></span>
+              <span className="text-agri-dark font-extrabold bg-agri-pastel px-2 py-0.5 rounded-full text-[11px]">
+                {product.quantity} {product.unit}s {t('common.available')}
+              </span>
+            </div>
+
+            {/* Bulk specifications */}
+            <div className="flex items-center justify-between text-[11px] text-gray-500 pt-1">
+              <span>{t('common.unit_size')}: <strong className="text-gray-800 font-bold">{product.unitSize || '20 kg'} / {product.unit}</strong></span>
+              <span>{t('common.min_order')}: <strong className="text-agri-dark font-bold">{product.minimumOrderQuantity || 1} {product.unit}</strong></span>
+            </div>
+
+            {/* Video preview badge if available */}
+            {product.qualityVideoUrl && (
+              <div className="inline-flex items-center gap-1 bg-amber-50 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded-md border border-amber-200 mt-1">
+                <span>▶ {t('common.quality_video')}</span>
+              </div>
+            )}
           </div>
         </div>
 
